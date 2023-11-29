@@ -11,6 +11,10 @@ class App:
         default_font = font.nametofont("TkDefaultFont")
         default_font.configure(family="Helvetica", size=12, weight="bold")
 
+        # Set the window size and make it unscalable
+        self.root.geometry("1024x600")
+        self.root.resizable(False, False)
+
         # Create normal style buttons
         self.start_button = tk.Button(
             root,
