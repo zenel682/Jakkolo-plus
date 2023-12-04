@@ -78,7 +78,7 @@ class App:
             fg="white",
             font=("Helvetica", 12, "bold"),
         )
-        self.tracker_buttracker_stopton.pack(ipadx=10, padx=20)
+        self.tracker_stop.pack(ipadx=10, padx=20)
         self.add_hover_effect(self.tracker_stop)
 
         # Frame to display content
