@@ -81,9 +81,25 @@ class App:
         self.tracker_stop.pack(ipadx=10, padx=20)
         self.add_hover_effect(self.tracker_stop)
 
+        # Add labels
+        # Variable to be displayed in the label
+        self.display_var = tk.IntVar()
+        self.display_var.set(0)
+
+        # Label to display the variable
+        self.display_label = tk.Label(
+            root,
+            textvariable=self.display_var,
+            font=("Helvetica", 14),
+            bg="#E6E6FA"
+        )
+        self.display_label.pack(padx=50, pady=40)
+
         # Frame to display content
         self.current_frame = tk.Frame(root, padx=20, pady=20, bg="#E6E6FA")  # Set light purple background color
 
+        # Schedule the update function to run every 1000 milliseconds (1 second)
+        self.root.after(1000, self.update_variable)
     def add_hover_effect(self, button):
         button.bind("<Enter>", lambda event, b=button: self.on_enter(event, b))
         button.bind("<Leave>", lambda event, b=button: self.on_leave(event, b))
@@ -96,6 +112,7 @@ class App:
 
     def start_tracker(self):
         print("Start Tracking")
+        self.display_var = endschalter.b1_counter
         endschalter.read_it = True
         try: 
             thread1.start()
@@ -107,6 +124,15 @@ class App:
             print("Joined threads")
         except:
             print("Thread was not opened yet")
+
+    # Update score variable
+    def update_variable(self):
+        new_value = endschalter.b1_counter
+        self.display_var.set(new_value)
+
+        # Schedule the update function to run again after 1000 milliseconds
+        self.root.after(1000, self.update_variable)
+
 
 
     def show_page(self, title):
