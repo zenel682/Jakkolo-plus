@@ -7,6 +7,7 @@ class KeyCounter:
         self.var2 = 0
         self.var3 = 0
         self.var4 = 0
+        self.readKeys = True
 
         # Register the callback for key releases
         keyboard.on_release(callback=self.on_key_release)
@@ -28,13 +29,17 @@ class KeyCounter:
         print(f'var1: {self.var1}, var2: {self.var2}, var3: {self.var3}, var4: {self.var4}')
 
     def run(self):
-        try:
-            # Keep the script running
-            keyboard.wait('esc')  # Wait for the 'esc' key to exit the program
-        finally:
-            # Unregister the callback to avoid memory leaks
-            keyboard.unhook_all()
+        while self.readKeys:
+            try:
+                # Keep the script running
+                keyboard.wait('esc')  # Wait for the 'esc' key to exit the program
+            except KeyboardInterrupt:
+                print("Exit")
+                self.readKeys = False
+            finally:
+                # Unregister the callback to avoid memory leaks
+                keyboard.unhook_all()
 
-if __name__ == "__main__":
-    key_counter = KeyCounter()
-    key_counter.run()
+    def stop(self):
+        self.readKeys = False
+        keyboard.unhook_all()

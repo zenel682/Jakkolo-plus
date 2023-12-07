@@ -2,17 +2,22 @@ import threading
 import tkinter as tk
 from tkinter import font
 
-from gpio_class import Endschalter
+# Toogle when using Raspi or PC
+#from gpio_class import Endschalter
+#endschalter = Endschalter()
+#thread1 = threading.Thread(target=endschalter.read_endschalter)
 
-
-endschalter = Endschalter()
-thread1 = threading.Thread(target=endschalter.read_endschalter)
+from keyboard_class import KeyCounter
+#keycounter = KeyCounter()
+#thread1 = threading.Thread(target=keycounter)
 
 class App:
     def __init__(self, root):
         self.root = root
         self.root.title("Button Page Example")
         self.root.configure(bg="#E6E6FA")  # Set light purple background color
+        self.new_value = 0
+        self.start = False
 
         # Set the default font for the buttons
         default_font = font.nametofont("TkDefaultFont")
@@ -112,28 +117,48 @@ class App:
 
     def start_tracker(self):
         print("Start Tracking")
-        self.display_var = endschalter.b1_counter
-        endschalter.read_it = True
+
+        # Toggle on Raspi or PC
+        #self.display_var = endschalter.b1_counter
+        #endschalter.read_it = True  
         try: 
-            thread1.start()
+            self.thread1 = threading.Thread(target=self.run_keycounter)
+            self.thread1.start()
+            self.start = True
+            print("thread started")
+            self.start = True
+            #self.display_var = run
+            
+        #    keycounter.readKeys = True
+        #    thread1.start()
         except:
             print("Already openend thread")
+    def run_keycounter(self):    
+        self.keycounter = KeyCounter()
+        self.keycounter.run()
+
     def stop_tracker(self):
-        try:
-            thread1.join()
+        if self.thread1 and self.thread1.is_alive():
+            self.keycounter.stop()
+            self.thread1.join(timeout=3)
             print("Joined threads")
-        except:
+        else:
             print("Thread was not opened yet")
 
     # Update score variable
     def update_variable(self):
-        new_value = endschalter.b1_counter
+        # Toggle Raspi and PC
+        #new_value = endschalter.b1_counter
+        if self.start:
+            print("keycounter there") 
+            new_value = self.keycounter.var1
+        else: 
+            print("no keycounter")
+            new_value = 0
         self.display_var.set(new_value)
 
         # Schedule the update function to run again after 1000 milliseconds
         self.root.after(1000, self.update_variable)
-
-
 
     def show_page(self, title):
         # Destroy any existing widgets in the current frame
