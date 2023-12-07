@@ -1,4 +1,5 @@
 import keyboard
+import time
 
 class KeyCounter:
     def __init__(self):
@@ -30,7 +31,8 @@ class KeyCounter:
 
     def run(self):
         while self.readKeys:
-            try:
+            time.sleep(0.1)
+            """try:
                 # Keep the script running
                 keyboard.wait('esc')  # Wait for the 'esc' key to exit the program
             except KeyboardInterrupt:
@@ -38,7 +40,8 @@ class KeyCounter:
                 self.readKeys = False
             finally:
                 # Unregister the callback to avoid memory leaks
-                keyboard.unhook_all()
+                self.readKeys = False
+                keyboard.unhook_all()"""
 
     def stop(self):
         self.readKeys = False

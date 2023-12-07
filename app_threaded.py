@@ -1,6 +1,7 @@
 import threading
 import tkinter as tk
 from tkinter import font
+import atexit
 
 # Toogle when using Raspi or PC
 #from gpio_class import Endschalter
@@ -206,8 +207,14 @@ class App:
 
         # Unpack the current frame to hide it
         self.current_frame.pack_forget()
+    
+    def stop_threads(self):
+        self.stop_tracker()
+        # Add more cleanup if needed
 
 if __name__ == "__main__":
     root = tk.Tk()
     app = App(root)
+    # Register cleanup function
+    atexit.register(app.stop_threads)
     root.mainloop()
