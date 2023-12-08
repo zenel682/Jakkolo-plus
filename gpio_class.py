@@ -28,6 +28,9 @@ class Endschalter:
         self.b2_counter = 0
         self.b3_counter = 0
         self.b4_counter = 0
+    def stop(self):
+        self.read_it = False
+        GPIO.cleanup()
     
     def read_endschalter(self):
         try:
@@ -39,21 +42,34 @@ class Endschalter:
                 button_state_4 = GPIO.input(button_pin_4)
 
                 # Add 1 if state changes
-                if self.bs1_old != button_state_1:
+                if self.bs1_old != button_state_1 and button_state_1 == 1:
                     self.b1_counter += 1
+                if self.bs2_old != button_state_2 and button_state_2 == 1:
+                    self.b2_counter += 1
+                if self.bs3_old != button_state_3 and button_state_3 == 1:
+                    self.b3_counter += 1
+                if self.bs4_old != button_state_4 and button_state_4 == 1:
+                    self.b4_counter += 1
            
             
                 # Print the state
                 print("Button state 1:", button_state_1, self.b1_counter)
-                print("Button state 2:", button_state_2)
-                print("Button state 3:", button_state_3)
-                print("Button state 4:", button_state_4)
+                print("Button state 2:", button_state_2, self.b2_counter)
+                print("Button state 3:", button_state_3, self.b3_counter)
+                print("Button state 4:", button_state_4, self.b4_counter)
                 # Add a delay to avoid rapid readings
-                time.sleep(1)
+                time.sleep(0.1)
+                
+                # Update old values
+                self.bs1_old = button_state_1
+                self.bs2_old = button_state_2
+                self.bs3_old = button_state_3
+                self.bs4_old = button_state_4
 
         except KeyboardInterrupt:
             print("Exiting...")
 
-        finally:
-            # Cleanup GPIO settings
-            GPIO.cleanup()
+            
+if __name__ == "__main__":
+    end = Endschalter()
+    end.read_endschalter()
