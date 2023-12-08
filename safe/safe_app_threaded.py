@@ -151,6 +151,7 @@ class App:
 
     def start_tracker(self):
         print("Start Tracking")
+
         # Toggle on Raspi or PC
         #self.display_var = endschalter.b1_counter
         #endschalter.read_it = True  
@@ -200,7 +201,7 @@ class App:
         self.display_var4.set(new_value4)
 
         # Schedule the update function to run again after 1000 milliseconds
-        self.root.after(100, self.update_variable)
+        self.root.after(1000, self.update_variable)
 
     def show_page(self, title):
         # Destroy any existing widgets in the current frame
