@@ -112,7 +112,7 @@ class App:
 
     def start_tracker(self):
         print("Start Tracking")
-        self.display_var = endschalter.b1_counter
+        #self.display_var = endschalter.b1_counter
         endschalter.read_it = True
         try: 
             thread1.start()
@@ -120,7 +120,8 @@ class App:
             print("Already openend thread")
     def stop_tracker(self):
         try:
-            thread1.join()
+            thread1.join(timeout=2)
+            endschalter.read_it = False
             print("Joined threads")
         except:
             print("Thread was not opened yet")
@@ -131,7 +132,7 @@ class App:
         self.display_var.set(new_value)
 
         # Schedule the update function to run again after 1000 milliseconds
-        self.root.after(1000, self.update_variable)
+        self.root.after(100, self.update_variable)
 
 
 
