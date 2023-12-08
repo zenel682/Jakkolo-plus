@@ -50,6 +50,18 @@ class App:
         self.explanation_button.pack(ipadx=10, padx=20)
         self.add_hover_effect(self.explanation_button)
 
+        self.tracker_button = tk.Button(
+            root,
+            text="Start tracker",
+            command=lambda: self.start_tracker(),
+            bg="#FFA500",
+            fg="white",
+            font=("Helvetica", 12, "bold"),
+        )
+        self.tracker_button.pack(ipadx=10, padx=20)
+        self.add_hover_effect(self.tracker_button)
+
+
         # Frame to display content
         self.current_frame = tk.Frame(root, padx=20, pady=20, bg="#E6E6FA")  # Set light purple background color
 
@@ -89,6 +101,7 @@ class App:
         self.start_button.pack_forget()
         self.leaderboard_button.pack_forget()
         self.explanation_button.pack_forget()
+        self.tracker_button.pack_forget()
 
         # Pack the current frame to display it
         self.current_frame.pack()
@@ -102,9 +115,14 @@ class App:
         self.start_button.pack(ipadx=10, padx=20)
         self.leaderboard_button.pack(ipadx=10, padx=20)
         self.explanation_button.pack(ipadx=10, padx=20)
+        self.tracker_button.pack(ipadx=10, padx=20)
 
         # Unpack the current frame to hide it
         self.current_frame.pack_forget()
+    
+    def start_tracker(self):
+        print("Start Tracking")
+
 
 if __name__ == "__main__":
     root = tk.Tk()
