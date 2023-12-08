@@ -89,17 +89,50 @@ class App:
 
         # Add labels
         # Variable to be displayed in the label
-        self.display_var = tk.IntVar()
-        self.display_var.set(0)
+        self.display_var1 = tk.IntVar()
+        self.display_var1.set(0)
+        self.display_var2 = tk.IntVar()
+        self.display_var2.set(0)
+        self.display_var3 = tk.IntVar()
+        self.display_var3.set(0)
+        self.display_var4 = tk.IntVar()
+        self.display_var4.set(0)
 
-        # Label to display the variable
-        self.display_label = tk.Label(
+        # Label1 to display the variable
+        self.display_label1 = tk.Label(
             root,
-            textvariable=self.display_var,
+            textvariable=self.display_var1,
             font=("Helvetica", 14),
             bg="#E6E6FA"
         )
-        self.display_label.pack(padx=50, pady=40)
+        self.display_label1.pack(padx=0, pady=20)
+
+        # Label2 to display the variable
+        self.display_label2 = tk.Label(
+            root,
+            textvariable=self.display_var2,
+            font=("Helvetica", 14),
+            bg="#E6E6FA"
+        )
+        self.display_label2.pack(padx=10, pady=20)
+
+        # Label3 to display the variable
+        self.display_label3 = tk.Label(
+            root,
+            textvariable=self.display_var3,
+            font=("Helvetica", 14),
+            bg="#E6E6FA"
+        )
+        self.display_label3.pack(padx=20, pady=20)
+
+        # Label4 to display the variable
+        self.display_label4 = tk.Label(
+            root,
+            textvariable=self.display_var4,
+            font=("Helvetica", 14),
+            bg="#E6E6FA"
+        )
+        self.display_label4.pack(padx=30, pady=20)
 
         # Frame to display content
         self.current_frame = tk.Frame(root, padx=20, pady=20, bg="#E6E6FA")  # Set light purple background color
@@ -127,7 +160,6 @@ class App:
             self.thread1.start()
             self.start = True
             print("thread started")
-            self.start = True
             #self.display_var = run
             
         #    keycounter.readKeys = True
@@ -152,11 +184,21 @@ class App:
         #new_value = endschalter.b1_counter
         if self.start:
             print("keycounter there") 
-            new_value = self.keycounter.var1
+            new_value1= self.keycounter.var1
+            new_value2= self.keycounter.var2
+            new_value3= self.keycounter.var3
+            new_value4= self.keycounter.var4
         else: 
             print("no keycounter")
-            new_value = 0
-        self.display_var.set(new_value)
+            new_value1 = 0
+            new_value2 = 0
+            new_value3 = 0
+            new_value4 = 0
+
+        self.display_var1.set(new_value1)
+        self.display_var2.set(new_value2)
+        self.display_var3.set(new_value3)
+        self.display_var4.set(new_value4)
 
         # Schedule the update function to run again after 1000 milliseconds
         self.root.after(1000, self.update_variable)
@@ -189,6 +231,10 @@ class App:
         self.explanation_button.pack_forget()
         self.tracker_start.pack_forget()
         self.tracker_stop.pack_forget()
+        self.display_label1.pack_forget()
+        self.display_label2.pack_forget()
+        self.display_label3.pack_forget()
+        self.display_label4.pack_forget()
 
         # Pack the current frame to display it
         self.current_frame.pack()
@@ -204,6 +250,10 @@ class App:
         self.explanation_button.pack(ipadx=10, padx=20)
         self.tracker_start.pack(ipadx=10, padx=20)
         self.tracker_stop.pack(ipadx=10, padx=20)
+        self.display_label1.pack(ipadx=0, padx=20)
+        self.display_label2.pack(ipadx=10, padx=20)
+        self.display_label3.pack(ipadx=20, padx=20)
+        self.display_label4.pack(ipadx=30, padx=20)
 
         # Unpack the current frame to hide it
         self.current_frame.pack_forget()
