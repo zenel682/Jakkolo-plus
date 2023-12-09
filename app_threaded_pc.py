@@ -13,6 +13,141 @@ from keyboard_class import KeyCounter
 keycounter = KeyCounter()
 thread1 = threading.Thread(target=keycounter)
 
+
+class MainPageButtonFrame(ctk.CTkFrame):
+    def __init__(self, master):
+        super().__init__(master)
+
+        # Main Page -------------------------#
+        # Create heading
+        self.heading_label = tk.Label(
+            self,
+            text='Jakkolo plus',
+            font=("Helvetica", 25),
+        )
+        self.heading_label.pack(padx=0, pady=20)
+
+        # Create Einzelspieler button
+        self.singleplayer_button = ctk.CTkButton(
+            self,
+            text="Einzelspieler",
+            #command=lambda: self.show_page("Start"),
+            fg_color='#547AA5',
+            font=("Helvetica", 12, "bold"),
+        )
+        self.singleplayer_button.pack(ipadx=10, padx=20)
+
+        # Create 2 Spieler button
+        self.two_player_button = ctk.CTkButton(
+            self,
+            text="2 Spieler",
+            #command=lambda: self.show_page("Start"),
+            fg_color='#547AA5',
+            font=("Helvetica", 12, "bold"),
+        )
+        self.two_player_button.pack(ipadx=10, padx=20)
+
+        # Create 3 Spieler button
+        self.three_player_button = ctk.CTkButton(
+            self,
+            text="3 Spieler",
+            #command=lambda: self.show_page("Start"),
+            fg_color='#547AA5',
+            font=("Helvetica", 12, "bold"),
+        )
+        self.three_player_button.pack(ipadx=10, padx=20)
+
+        # Create 4 Spieler button
+        self.four_player_button = ctk.CTkButton(
+            self,
+            text="4 Spieler",
+            #command=lambda: self.show_page("Start"),
+            fg_color='#547AA5',
+            font=("Helvetica", 12, "bold"),
+        )
+        self.four_player_button.pack(ipadx=10, padx=20)
+
+        # Create Start button
+        self.start_button = ctk.CTkButton(
+            self,
+            text="Start",
+            command=lambda: show_page(self, "Start"),
+            fg_color='#50D8D7',
+            font=("Helvetica", 12, "bold"),
+        )
+        self.start_button.pack(ipadx=10, padx=20)
+        
+        # Create Bestenliste button
+        self.leaderboard_button = ctk.CTkButton(
+            self,
+            text="Bestenliste",
+            command=lambda: show_page(self, "Bestenliste"),
+            fg_color='#4F5156',
+            font=("Helvetica", 12, "bold"),
+        )
+        self.leaderboard_button.pack(ipadx=10, padx=20)
+
+        # Create Anleitung button
+        self.explanation_button = ctk.CTkButton(
+            self,
+            text="Anleitung",
+            command=lambda: show_page(self, "Anleitung"),
+            fg_color='#50D8D7',
+            font=("Helvetica", 12, "bold"),
+        )
+        self.explanation_button.pack(ipadx=10, padx=20)
+
+        # Create Einstellung button
+        self.settings_button = ctk.CTkButton(
+            self,
+            text="Settings",
+            #command=lambda: self.start_tracker(),
+            fg_color='#547AA5',
+            font=("Helvetica", 12, "bold"),
+        )
+        self.settings_button.pack(ipadx=10, padx=20)
+        #-------------------------------------------#
+
+        def show_page(self, title):
+            # Destroy any existing widgets in the current frame
+            for widget in self.current_frame.winfo_children():
+                widget.destroy()
+
+            # Display the title in the current frame
+            title_label = ctk.CTkLabel(self, text=title, font=("Helvetica", 16, "bold"))
+            title_label.pack()
+
+            # Button to go back to the main frame
+            back_button = ctk.CTkButton(
+                self,
+                text="Back to Main",
+                command=self.show_main_page,
+                fg_color="white",
+                font=("Helvetica", 12, "bold"),
+            )
+            back_button.pack()
+
+            #self.add_hover_effect(back_button)
+
+            # Hide the main buttons
+            self.start_button.pack_forget()
+            self.leaderboard_button.pack_forget()
+            self.explanation_button.pack_forget()
+            self.tracker_start.pack_forget()
+            self.tracker_stop.pack_forget()
+            self.display_label1.pack_forget()
+            self.display_label2.pack_forget()
+            self.display_label3.pack_forget()
+            self.display_label4.pack_forget()
+
+            if title == "Start":
+                print("Dood bob")
+                self.start_page()
+
+            # Pack the current frame to display it
+            self.current_frame.pack()
+
+
 class App(ctk.CTk):
     def __init__(self):
         super().__init__()
@@ -31,35 +166,11 @@ class App(ctk.CTk):
         self.resizable(False, False)
         #self.root.config(cursor="none")
 
-        # Create normal style buttons
-        self.start_button = ctk.CTkButton(
-            self,
-            text="Start",
-            command=lambda: self.show_page("Start"),
-            fg_color="white",
-            font=("Helvetica", 12, "bold"),
-        )
-        self.start_button.pack(ipadx=10, padx=20)
+        # Add mainbuttonframe
+        self.mpbutton_frame = MainPageButtonFrame(self)
+        self.mpbutton_frame.pack(ipadx=0, ipady=0)
 
-        self.leaderboard_button = ctk.CTkButton(
-            self,
-            text="Leaderboard",
-            command=lambda: self.show_page("Leaderboard"),
-            border_color="#FFA500",
-            fg_color="white",
-            font=("Helvetica", 12, "bold"),
-        )
-        self.leaderboard_button.pack(ipadx=10, padx=20)
-
-        self.explanation_button = ctk.CTkButton(
-            self,
-            text="Explanation",
-            command=lambda: self.show_page("Explanation"),
-            border_color="#FFA500",
-            fg_color="white",
-            font=("Helvetica", 12, "bold"),
-        )
-        self.explanation_button.pack(ipadx=10, padx=20)
+        
 
         # Start tracker button
         self.tracker_start = ctk.CTkButton(
@@ -194,44 +305,7 @@ class App(ctk.CTk):
         # Schedule the update function to run again after 1000 milliseconds
         self.after(100, self.update_variable)
 
-    def show_page(self, title):
-        # Destroy any existing widgets in the current frame
-        for widget in self.current_frame.winfo_children():
-            widget.destroy()
-
-        # Display the title in the current frame
-        title_label = ctk.CTkLabel(self.current_frame, text=title, font=("Helvetica", 16, "bold"))
-        title_label.pack()
-
-        # Button to go back to the main frame
-        back_button = ctk.CTkButton(
-            self.current_frame,
-            text="Back to Main",
-            command=self.show_main_page,
-            fg_color="white",
-            font=("Helvetica", 12, "bold"),
-        )
-        back_button.pack()
-
-        #self.add_hover_effect(back_button)
-
-        # Hide the main buttons
-        self.start_button.pack_forget()
-        self.leaderboard_button.pack_forget()
-        self.explanation_button.pack_forget()
-        self.tracker_start.pack_forget()
-        self.tracker_stop.pack_forget()
-        self.display_label1.pack_forget()
-        self.display_label2.pack_forget()
-        self.display_label3.pack_forget()
-        self.display_label4.pack_forget()
-
-        if title == "Start":
-            print("Dood bob")
-            self.start_page()
-
-        # Pack the current frame to display it
-        self.current_frame.pack()
+    
 
     def show_main_page(self):
         # Destroy any existing widgets in the current frame
