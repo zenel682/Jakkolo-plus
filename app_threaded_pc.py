@@ -41,8 +41,6 @@ class App(ctk.CTk):
         )
         self.start_button.pack(ipadx=10, padx=20)
 
-        #self.add_hover_effect(self.start_button)
-
         self.leaderboard_button = ctk.CTkButton(
             self,
             text="Leaderboard",
@@ -52,7 +50,6 @@ class App(ctk.CTk):
             font=("Helvetica", 12, "bold"),
         )
         self.leaderboard_button.pack(ipadx=10, padx=20)
-        #self.add_hover_effect(self.leaderboard_button)
 
         self.explanation_button = ctk.CTkButton(
             self,
@@ -63,7 +60,6 @@ class App(ctk.CTk):
             font=("Helvetica", 12, "bold"),
         )
         self.explanation_button.pack(ipadx=10, padx=20)
-        #self.add_hover_effect(self.explanation_button)
 
         # Start tracker button
         self.tracker_start = ctk.CTkButton(
@@ -75,7 +71,6 @@ class App(ctk.CTk):
             font=("Helvetica", 12, "bold"),
         )
         self.tracker_start.pack(ipadx=10, padx=20)
-        #self.add_hover_effect(self.tracker_start)
 
         # Stop tracker button
         self.tracker_stop = ctk.CTkButton(
@@ -87,7 +82,6 @@ class App(ctk.CTk):
             font=("Helvetica", 12, "bold"),
         )
         self.tracker_stop.pack(ipadx=10, padx=20)
-        #self.add_hover_effect(self.tracker_stop)
 
         # Add labels
         # Variable to be displayed in the label
@@ -137,15 +131,6 @@ class App(ctk.CTk):
 
         # Schedule the update function to run every 1000 milliseconds (1 second)
         self.after(1000, self.update_variable)
-    """def add_hover_effect(self, button):
-        button.bind("<Enter>", lambda event, b=button: self.on_enter(event, b))
-        button.bind("<Leave>", lambda event, b=button: self.on_leave(event, b))
-
-    def on_enter(self, event, button):
-        button.config(border_color="#FFD700")  # Brighter color on hover
-
-    def on_leave(self, event, button):
-        button.config(border_color="#FFA500")  # Restore original color on leave"""
 
     def start_tracker(self):
         print("Start Tracking")
