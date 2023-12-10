@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from pages.pages_jakkolo import MainPage, AnleitungsFrame
+from pages.pages_jakkolo import MainPage, AnleitungsPage
 
 class App(ctk.CTk):
     def __init__(self, root):
@@ -13,10 +13,10 @@ class App(ctk.CTk):
 
     def show_first_page(self):
         self.switch_frame(MainPage)
-
+    """ 
     def show_second_page(self):
-        self.switch_frame(AnleitungsFrame)
-
+        self.switch_frame(AnleitungsPage)
+    """
     def switch_frame(self, frame_class):
         if self.current_frame:
             self.current_frame.pack_forget()  # Hide the current frame
