@@ -1,27 +1,61 @@
 import customtkinter as ctk
 
-global inGame
-inGame = False
-
 class MainPage(ctk.CTkFrame):
+    global inGame
+    inGame = False
+    global score_player_1, score_player_2, score_player_3, score_player_4, score
+    score_player_1 = 0
+    score_player_2 = 0
+    score_player_3 = 0
+    score_player_4 = 0
+
+    global name_player_1, name_player_2, name_player_3, name_player_4
+    name_player_1 = ""
+    name_player_2 = "" 
+    name_player_3 = "" 
+    name_player_4 = ""
+
+    global round_number
+    round_number = 1
+
+    global puck_count
+    puck_count = 30
+
+    global rank_player_1, rank_player_2, rank_player_3, rank_player_4
+
+    global count_ones, count_twos, count_threes, count_fours
+    count_ones = 0
+    count_twos = 0
+    count_threes = 0
+    count_fours = 0
+
+    global player_count
+    player_count = 0
+
+    global current_player
+    current_player = 1
+
     def __init__(self, parent, switch_callback):
         ctk.CTkFrame.__init__(self, parent)
         self.parent = parent
+        player_count = 0
+        print("Playercount " + str(player_count))
+
 
         # Labels
         self.label = ctk.CTkLabel(self, text="Mainpage")
         self.label.pack(padx=20, pady=20)
 
         # Selection
-        self.playercount_var = ctk.StringVar()
-        self.plyercount_button = ctk.CTkSegmentedButton(self, values=["Einzelspieler", "2 Spieler", "3 Spieler", "4 Spieler"],
-                                                     command=self.getPlayercount,
-                                                     variable=self.playercount_var)
+        player_count = ctk.StringVar()
+        self.playercount_button = ctk.CTkSegmentedButton(self, values=["Einzelspieler", "2 Spieler", "3 Spieler", "4 Spieler"],
+                                                     command= self.getPlayercountAndDisableStart,
+                                                     variable=player_count)
         
-        self.plyercount_button.pack()
+        self.playercount_button.pack()
 
         # Buttons
-        self.explain_button = ctk.CTkButton(self, text="Anleitung", command=lambda: switch_callback(AnleitungsPage))
+        self.explain_button = ctk.CTkButton(self, text="Anleitung", font=("Minion Pro Med", 20), command=lambda: switch_callback(AnleitungsPage))
         self.explain_button.pack(pady=10)
         self.leaderboard_button = ctk.CTkButton(self, text="Bestenliste", command=lambda: switch_callback(BestenlistPage))
         self.leaderboard_button.pack(pady=10)
@@ -29,9 +63,33 @@ class MainPage(ctk.CTkFrame):
         self.start_button.pack(pady=10)
         self.settings_button = ctk.CTkButton(self, text="Einstellungen", command=lambda: switch_callback(EinstellungsPage))
         self.settings_button.pack(pady=10)
+        self.start_button.configure(state="disabled")
+        self.disableStart()
 
     def getPlayercount(self, value):
-        print("segmented button clicked:", value)
+        global player_count
+        if value == "Einzelspieler":
+            player_count = 1
+        elif value == "2 Spieler":
+            player_count = 2
+        elif value == "3 Spieler":
+            player_count = 3
+        elif value == "4 Spieler":
+            player_count = 4
+        else:
+            player_count = 0
+
+        print("segmented button clicked:", player_count)
+
+    def disableStart(self):
+        if player_count != 0:
+            self.start_button.configure(state="normal")
+
+        print("Im here")
+
+    def getPlayercountAndDisableStart(self, value):
+        self.getPlayercount(value)
+        self.disableStart()
 
 class AnleitungsPage(ctk.CTkFrame):
     def __init__(self, parent, switch_callback):
@@ -116,22 +174,58 @@ class SpielernamenPage(ctk.CTkFrame):
         self.playername_3_input.pack(pady=5)
         self.playername_4_input = ctk.CTkEntry(self, placeholder_text="Spielername 4")
         self.playername_4_input.pack(pady=5)
+        self.disableInputs()
 
         # Buttons
-        self.back_button = ctk.CTkButton(self, text="zurück", command=lambda: switch_callback(MainPage))
+        self.back_button = ctk.CTkButton(self, text="zurück", command=lambda: [switch_callback(MainPage), self.clearPlayercount()])
         self.back_button.pack(pady=10)
         self.forward_button = ctk.CTkButton(self, text="weiter", command=lambda: [switch_callback(HindernissPage), self.getSpielernamen()])
         self.forward_button.pack(pady=10)
 
     def getSpielernamen(self):
-        self.playername_1 = self.playername_1_input.get()
-        print(self.playername_1)
-        self.playername_2 = self.playername_2_input.get()
-        print(self.playername_2)
-        self.playername_3 = self.playername_3_input.get()
-        print(self.playername_3)
-        self.playername_4 = self.playername_4_input.get()
-        print(self.playername_4)
+        if self.playername_1_input.get() != "":
+            name_player_1 = self.playername_1_input.get()
+        else:
+            name_player_1 = "Standardspieler 1"
+
+        if self.playername_2_input.get() != "":
+            name_player_2 = self.playername_2_input.get()
+        else:
+            name_player_2 = "Standardspieler 2"
+
+        if self.playername_3_input.get() != "":
+            name_player_3 = self.playername_3_input.get()
+        else:
+            name_player_3 = "Standardspieler 3"
+
+        if self.playername_4_input.get() != "":
+            name_player_4 = self.playername_4_input.get()
+        else:
+            name_player_4 = "Standardspieler 4"
+
+        global current_player
+        current_player = name_player_1
+
+        print(name_player_1)
+        print(name_player_2)
+        print(name_player_3)      
+        print(name_player_4)
+ 
+
+    def disableInputs(self):
+        if player_count == 1:
+            self.playername_2_input.configure(state="disabled")
+            self.playername_3_input.configure(state="disabled")
+            self.playername_4_input.configure(state="disabled")
+        elif player_count == 2:
+            self.playername_3_input.configure(state="disabled")
+            self.playername_4_input.configure(state="disabled")
+        elif player_count == 3:
+            self.playername_4_input.configure(state="disabled")
+
+    def clearPlayercount(self):
+        global player_count
+        player_count = 0
         
 
 class HindernissPage(ctk.CTkFrame):
@@ -161,11 +255,14 @@ class SpielPage(ctk.CTkFrame):
         self.parent = parent
         
         # Labels
-        self.label2 = ctk.CTkLabel(self, text="Spielpage")
-        self.label2.pack(pady=20)
+        self.points_label = ctk.CTkLabel(self, text="Punkte: " + str(score))
+        self.points_label.pack(pady=20)
+        
+        self.currentplayer_label = ctk.CTkLabel(self, text=current_player)
+        self.currentplayer_label.pack(pady=20)
 
         # Buttons
-        self.closeround_button = ctk.CTkButton(self, text="Ich schliesse Runde X von 3 ab", command=lambda: switch_callback(ResultatPage))
+        self.closeround_button = ctk.CTkButton(self, text="Ich schliesse Runde X von 3 ab", command=lambda: [switch_callback(ResultatPage), self.updateStatus()])
         self.closeround_button.pack(pady=10)
         self.endgame_button = ctk.CTkButton(self, text="Spiel abbrechen", command=lambda: [switch_callback(MainPage), self.updateStatus()])
         self.endgame_button.pack(pady=10)
