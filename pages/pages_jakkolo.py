@@ -8,6 +8,7 @@ class MainPage(ctk.CTkFrame):
     score_player_2 = 0
     score_player_3 = 0
     score_player_4 = 0
+    score = 0
 
     global name_player_1, name_player_2, name_player_3, name_player_4
     name_player_1 = ""
@@ -30,7 +31,7 @@ class MainPage(ctk.CTkFrame):
     count_fours = 0
 
     global player_count
-    player_count = 0
+    player_count = 1
 
     global current_player
     current_player = 1
@@ -38,16 +39,15 @@ class MainPage(ctk.CTkFrame):
     def __init__(self, parent, switch_callback):
         ctk.CTkFrame.__init__(self, parent)
         self.parent = parent
-        player_count = 0
+        player_count = 1
         print("Playercount " + str(player_count))
-
 
         # Labels
         self.label = ctk.CTkLabel(self, text="Mainpage")
         self.label.pack(padx=20, pady=20)
 
         # Selection
-        player_count = ctk.StringVar()
+        player_count = ctk.StringVar(value="Einzelspieler")
         self.playercount_button = ctk.CTkSegmentedButton(self, values=["Einzelspieler", "2 Spieler", "3 Spieler", "4 Spieler"],
                                                      command= self.getPlayercountAndDisableStart,
                                                      variable=player_count)
@@ -225,7 +225,7 @@ class SpielernamenPage(ctk.CTkFrame):
 
     def clearPlayercount(self):
         global player_count
-        player_count = 0
+        player_count = 1
         
 
 class HindernissPage(ctk.CTkFrame):
