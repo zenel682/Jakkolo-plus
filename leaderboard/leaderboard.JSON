@@ -1,36 +1,36 @@
 {
   "players": [
     {
-      "playerName": "Modified_Spielr Pro",
+      "playerName": "Modified_Modified_Spielr Pro",
+      "playerScore": 400
+    },
+    {
+      "playerName": "Modified_Modified_Spielr Noob",
+      "playerScore": 280
+    },
+    {
+      "playerName": "Modified_Modified_Spielr Proasdf",
+      "playerScore": 240
+    },
+    {
+      "playerName": "Modified_Modified_Spielr Nodaob",
       "playerScore": 200
     },
     {
-      "playerName": "Modified_Spielr Noob",
-      "playerScore": 140
+      "playerName": "Modified_Modified_Spielr Prozzz",
+      "playerScore": 160
     },
     {
-      "playerName": "Modified_Spielr Proasdf",
+      "playerName": "Modified_Modified_Spielr Nozzob",
       "playerScore": 120
     },
     {
-      "playerName": "Modified_Spielr Nodaob",
-      "playerScore": 100
-    },
-    {
-      "playerName": "Modified_Spielr Prozzz",
+      "playerName": "Modified_Modified_Spielr Prott",
       "playerScore": 80
     },
     {
-      "playerName": "Modified_Spielr Nozzob",
-      "playerScore": 60
-    },
-    {
-      "playerName": "Modified_Spielr Prott",
+      "playerName": "Modified_Modified_Spielr Nozzob",
       "playerScore": 40
-    },
-    {
-      "playerName": "Modified_Spielr Nozzob",
-      "playerScore": 20
     }
   ]
 }

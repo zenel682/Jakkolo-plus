@@ -1,6 +1,6 @@
 import customtkinter as ctk
 import json
-from pages.pages_jakkolo import MainPage, AnleitungsPage
+from pages_jakkolo import MainPage
 
 class App(ctk.CTk):
     def __init__(self, root):
@@ -24,7 +24,6 @@ class App(ctk.CTk):
 
 
 class Leaderboard():
-    
     def __init__(self):
         global path_to_leaderboard
         path_to_leaderboard = "leaderboard\leaderboard.JSON"
