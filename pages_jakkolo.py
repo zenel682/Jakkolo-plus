@@ -1,5 +1,5 @@
 import customtkinter as ctk
-#from controller_jakkolo import Leaderboard
+from leaderboard_jakkolo import Leaderboard
 
 class MainPage(ctk.CTkFrame):
     global inGame
@@ -37,10 +37,12 @@ class MainPage(ctk.CTkFrame):
     global current_player
     current_player = 1
 
-    
+    global leaderboard_pnames
+    global leaderboard_pscores
 
-    #lb = Leaderboard()
-    #lb.openAndReadJSON()
+    lb = Leaderboard()
+    leaderboard_pnames, leaderboard_pscores = lb.openAndReadJSON()
+    
 
 
     def __init__(self, parent, switch_callback):
@@ -53,8 +55,10 @@ class MainPage(ctk.CTkFrame):
         # Labels
         self.label = ctk.CTkLabel(self, text="Mainpage")
         self.label.pack(padx=20, pady=20)
-        #self.test = ctk.CTkLabel(self, text=player_names)
-        #self.label.pack(padx=20, pady=20)
+        self.test = ctk.CTkLabel(self, text=leaderboard_pnames[0])
+        self.test.pack(padx=50, pady=100)
+        self.scr = ctk.CTkLabel(self, text=leaderboard_pscores[0])
+        self.scr.pack(padx=50, pady=100)
 
         # Selection
         player_count = ctk.StringVar(value="Einzelspieler")
