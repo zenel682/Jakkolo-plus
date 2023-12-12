@@ -1,50 +1,29 @@
 import tkinter as tk
 
-class FirstPage(tk.Frame):
-    def __init__(self, parent, switch_callback):
-        tk.Frame.__init__(self, parent)
-        self.parent = parent
-
-        label = tk.Label(self, text="Page 1")
-        label.pack(pady=20)
-
-        button = tk.Button(self, text="Go to Page 2", command=lambda: switch_callback(SecondPage))
-        button.pack(pady=10)
-
-class SecondPage(tk.Frame):
-    def __init__(self, parent, switch_callback):
-        tk.Frame.__init__(self, parent)
-        self.parent = parent
-
-        label = tk.Label(self, text="U got it!")
-        label.pack(pady=20)
-
-        return_button = tk.Button(self, text="Return to Page 1", command=lambda: switch_callback(FirstPage))
-        return_button.pack(pady=10)
-
-class MyApp:
-    def __init__(self, root):
-        self.root = root
-        self.root.title("Page Switching")
-
-        self.current_frame = None  # To keep track of the current frame
-
-        self.show_first_page()
-
-    def show_first_page(self):
-        self.switch_frame(FirstPage)
-
-    def show_second_page(self):
-        self.switch_frame(SecondPage)
-
-    def switch_frame(self, frame_class):
-        if self.current_frame:
-            self.current_frame.pack_forget()  # Hide the current frame
-
-        self.current_frame = frame_class(self.root, self.switch_frame)
-        self.current_frame.pack()  # Display the new frame
-
-if __name__ == "__main__":
+def create_labels():
     root = tk.Tk()
-    app = MyApp(root)
+    root.title("Labels with Side Labels")
+
+    # Define the number of labels
+    label_count = 5
+    frame = tk.Frame(root)
+    frame.pack(side=tk.TOP)
+    for i in range(label_count):
+        # Create a frame for each row of three labels
+        frame = tk.Frame(root)
+        frame.pack(side=tk.TOP)
+
+        # Create the main label for each row
+        label_main = tk.Label(frame, text=f"Main Label {i+1}")
+        label_main.pack(side=tk.LEFT)
+
+        # Create two side labels for each row
+        label_side1 = tk.Label(frame, text=f"Side Label 1 ({i+1})")
+        label_side2 = tk.Label(frame, text=f"Side Label 2 ({i+1})")
+
+        label_side1.pack(side=tk.LEFT, padx=5)  # padx adds horizontal spacing between labels
+        label_side2.pack(side=tk.LEFT)
+
     root.mainloop()
+
+create_labels()

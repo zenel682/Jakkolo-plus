@@ -1,21 +1,17 @@
 from controller_jakkolo import App
 from leaderboard_jakkolo import Leaderboard
-from pages_jakkolo import leaderboard_pscores, leaderboard_pnames
+from pages_jakkolo import lb_pnames_pscores
 import customtkinter as ctk
 
 lb = Leaderboard()
 
-
-
 def on_close():
     print("Close app")
-    lb.safeAndCloseJSON(leaderboard_pnames, leaderboard_pscores)
+    lb.safeAndCloseJSON(lb_pnames_pscores)
     root.destroy()
 
 def on_open():
     print("Executing code on window open")
-    #lb.openAndReadJSON()
-
 
 if __name__ == "__main__":
     root = ctk.CTk()

@@ -37,13 +37,10 @@ class MainPage(ctk.CTkFrame):
     global current_player
     current_player = 1
 
-    global leaderboard_pnames
-    global leaderboard_pscores
+    global lb_pnames_pscores
 
     lb = Leaderboard()
-    leaderboard_pnames, leaderboard_pscores = lb.openAndReadJSON()
-    
-
+    lb_pnames_pscores = lb.openAndReadJSON()
 
     def __init__(self, parent, switch_callback):
         ctk.CTkFrame.__init__(self, parent)
@@ -55,10 +52,10 @@ class MainPage(ctk.CTkFrame):
         # Labels
         self.label = ctk.CTkLabel(self, text="Mainpage")
         self.label.pack(padx=20, pady=20)
-        self.test = ctk.CTkLabel(self, text=leaderboard_pnames[0])
-        self.test.pack(padx=50, pady=100)
-        self.scr = ctk.CTkLabel(self, text=leaderboard_pscores[0])
-        self.scr.pack(padx=50, pady=100)
+        self.test = ctk.CTkLabel(self, text=lb_pnames_pscores[0][0])
+        self.test.pack(padx=10, pady=10)
+        self.scr = ctk.CTkLabel(self, text=lb_pnames_pscores[0][1])
+        self.scr.pack(padx=10, pady=10)
 
         # Selection
         player_count = ctk.StringVar(value="Einzelspieler")
@@ -143,22 +140,19 @@ class BestenlistPage(ctk.CTkFrame):
         
 
     def createLeaderboard(self):
-        self.winner_label = ctk.CTkLabel(self, width=800, height=50, corner_radius=3, bg_color="blue", fg_color="blue", text_color="yellow", text="1. ")
-        self.winner_label.pack(pady=10)
-        self.second_label = ctk.CTkLabel(self, width=800, height=50, corner_radius=3, bg_color="blue", fg_color="blue", text_color="yellow", text="2.")
-        self.second_label.pack(pady=10)
-        self.third_label = ctk.CTkLabel(self, width=800, height=50, corner_radius=3, bg_color="blue", fg_color="blue", text_color="yellow", text="3.")
-        self.third_label.pack(pady=10)
-        self.fourth_label = ctk.CTkLabel(self, width=800, height=50, corner_radius=3, bg_color="blue", fg_color="blue", text_color="yellow", text="4.")
-        self.fourth_label.pack(pady=10)
-        self.fifth_label = ctk.CTkLabel(self, width=800, height=50, corner_radius=3, bg_color="blue", fg_color="blue", text_color="yellow", text="5.")
-        self.fifth_label.pack(pady=10)
-        self.sixth_label = ctk.CTkLabel(self, width=800, height=50, corner_radius=3, bg_color="blue", fg_color="blue", text_color="yellow", text="6.")
-        self.sixth_label.pack(pady=10)
-        self.seventh_label = ctk.CTkLabel(self, width=800, height=50, corner_radius=3, bg_color="blue", fg_color="blue", text_color="yellow", text="7.")
-        self.seventh_label.pack(pady=10)
-        self.eighthwinner_label = ctk.CTkLabel(self, width=800, height=50, corner_radius=3, bg_color="blue", fg_color="blue", text_color="yellow", text="8.")
-        self.eighthwinner_label.pack(pady=10)
+            
+        for i in range(len(lb_pnames_pscores)):
+            # Create a frame for each row of three labels
+            frame = ctk.CTkFrame(self)
+            frame.pack(side=ctk.TOP)
+
+            self.rank_label = ctk.CTkLabel(frame, width=50, height=30, corner_radius=3, bg_color="blue", fg_color="blue", text_color="yellow", text=f"{i+1}.")
+            self.name_label = ctk.CTkLabel(frame, width=200, height=30, corner_radius=3, bg_color="blue", fg_color="blue", text_color="yellow", text=lb_pnames_pscores[i][0])
+            self.score_label = ctk.CTkLabel(frame, width=200, height=30, corner_radius=3, bg_color="blue", fg_color="blue", text_color="yellow", text=lb_pnames_pscores[i][1])
+            
+            self.rank_label.pack(side=ctk.LEFT, padx=5, pady=5)
+            self.name_label.pack(side=ctk.LEFT, padx=5)
+            self.score_label.pack(side=ctk.LEFT, padx=5)
 
 class EinstellungsPage(ctk.CTkFrame):
     def __init__(self, parent, switch_callback):
