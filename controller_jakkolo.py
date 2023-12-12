@@ -26,14 +26,19 @@ class App(ctk.CTk):
 class Leaderboard():
     
     def __init__(self):
-        self.path_to_leaderboard = "leaderboard\leaderboard.JSON"
-
-    def openAndReadJSON(self):
-        leaderboard_file = open(self.path_to_leaderboard)
-        leaderboard_data = json.load(leaderboard_file)
-        # Initialize arrays to store player names and scores
+        global path_to_leaderboard
+        path_to_leaderboard = "leaderboard\leaderboard.JSON"
+        global player_names
+        global player_scores
         player_names = []
         player_scores = []
+
+    def openAndReadJSON(self):
+        leaderboard_file = open(path_to_leaderboard)
+        leaderboard_data = json.load(leaderboard_file)
+        # Initialize arrays to store player names and scores
+        global player_scores
+        global player_names       
 
         # Iterate over players and store names and scores
         for player in leaderboard_data['players']:
@@ -46,5 +51,26 @@ class Leaderboard():
                 
         leaderboard_file.close
 
-l = Leaderboard()
-l.openAndReadJSON()
+    def safeAndCloseJSON(self):
+        # Modify the player names and scores (for example, add a prefix)
+        global player_names
+        global player_scores
+        player_names = [f"Modified_{name}" for name in player_names]
+        player_scores = [score * 2 for score in player_scores]
+
+        # Create a new JSON structure with modified data
+        modified_data = {
+            "players": [
+                {"playerName": name, "playerScore": score} for name, score in zip(player_names, player_scores)
+            ]
+        }
+
+        # Convert the modified data back to JSON
+        modified_json = json.dumps(modified_data, indent=2)
+
+        # Print the modified JSON
+        print(modified_json)
+
+        # Optionally, you can write the modified JSON to a file
+        with open(path_to_leaderboard, 'w') as file:
+            file.write(modified_json)
