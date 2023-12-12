@@ -255,15 +255,17 @@ class SpielPage(ctk.CTkFrame):
         self.parent = parent
         
         # Labels
-        self.points_label = ctk.CTkLabel(self, text="Punkte: " + str(score))
+        self.points_label = ctk.CTkLabel(self, text=f"Punkte: {score}")
         self.points_label.pack(pady=20)
-        
         self.currentplayer_label = ctk.CTkLabel(self, text=current_player)
         self.currentplayer_label.pack(pady=20)
+        self.round_label = ctk.CTkLabel(self, text=f"Runde {round_number}/3")
+        self.round_label.pack(pady=20)
 
         # Buttons
-        self.closeround_button = ctk.CTkButton(self, text="Ich schliesse Runde X von 3 ab", command=lambda: [switch_callback(ResultatPage), self.updateStatus()])
-        self.closeround_button.pack(pady=10)
+        self.showContinueOrFinishButton(switch_callback)
+        #self.closeround_button = ctk.CTkButton(self, text="Ich schliesse Runde X von 3 ab", command=lambda: [switch_callback(RundenPage), self.increaseRoundnumber()])
+        #self.closeround_button.pack(pady=10)
         self.endgame_button = ctk.CTkButton(self, text="Spiel abbrechen", command=lambda: [switch_callback(MainPage), self.updateStatus()])
         self.endgame_button.pack(pady=10)
         self.explain_button = ctk.CTkButton(self, text="Anleitung", command=lambda: switch_callback(AnleitungsPage))
@@ -272,6 +274,25 @@ class SpielPage(ctk.CTkFrame):
     def updateStatus(self):
         global inGame
         inGame = False
+        global round_number
+        round_number = 1
+
+    def increaseRoundnumber(self):
+        global round_number
+        if round_number < 3:
+            round_number += 1
+        else:
+            round_number = 1
+
+    def showContinueOrFinishButton(self, switch_callback):
+        global round_number
+        if round_number < 3:
+            self.closeround_button = ctk.CTkButton(self, text=f"Ich schliesse Runde {round_number} von 3 ab", command=lambda: [switch_callback(RundenPage), self.increaseRoundnumber()])
+            self.closeround_button.pack(pady=10)
+        else: 
+            self.endplayerturn_button = ctk.CTkButton(self, text="Ich beende meine Spielzüge", command=lambda: [switch_callback(ResultatPage), self.updateStatus()])
+            self.endplayerturn_button.pack(pady=10)
+
 
 class ResultatPage(ctk.CTkFrame):
     def __init__(self, parent, switch_callback):
@@ -307,4 +328,17 @@ class InfoPage(ctk.CTkFrame):
 
         # Buttons
         self.again_button = ctk.CTkButton(self, text="OK", command=lambda: switch_callback(HindernissPage))
+        self.again_button.pack(pady=10)
+
+class RundenPage(ctk.CTkFrame):
+    def __init__(self, parent, switch_callback):
+        ctk.CTkFrame.__init__(self, parent)
+        self.parent = parent
+        
+        # Labels
+        self.label2 = ctk.CTkLabel(self, text="Zwischen Runden Page")
+        self.label2.pack(pady=20)
+
+        # Buttons
+        self.again_button = ctk.CTkButton(self, text="Pucks eingesammelt", command=lambda: switch_callback(SpielPage))
         self.again_button.pack(pady=10)
