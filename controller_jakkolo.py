@@ -1,4 +1,5 @@
 import customtkinter as ctk
+import json
 from pages.pages_jakkolo import MainPage, AnleitungsPage
 
 class App(ctk.CTk):
@@ -20,3 +21,30 @@ class App(ctk.CTk):
 
         self.current_frame = frame_class(self.root, self.switch_frame)
         self.current_frame.pack(padx=20, pady=20)  # Display the new frame
+
+
+class Leaderboard():
+    
+    def __init__(self):
+        self.path_to_leaderboard = "leaderboard\leaderboard.JSON"
+
+    def openAndReadJSON(self):
+        leaderboard_file = open(self.path_to_leaderboard)
+        leaderboard_data = json.load(leaderboard_file)
+        # Initialize arrays to store player names and scores
+        player_names = []
+        player_scores = []
+
+        # Iterate over players and store names and scores
+        for player in leaderboard_data['players']:
+            player_names.append(player['playerName'])
+            player_scores.append(player['playerScore'])
+
+        # Print the arrays
+        print("Player Names:", player_names)
+        print("Player Scores:", player_scores)
+                
+        leaderboard_file.close
+
+l = Leaderboard()
+l.openAndReadJSON()

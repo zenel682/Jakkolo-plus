@@ -1,0 +1,44 @@
+{
+    "players": [
+        {
+            "userID": 1,
+            "playerName": "Spielr Pro",
+            "playerScore": 100
+        },
+        {
+            "userID": 2,
+            "playerName": "Spielr Noob",
+            "playerScore": 70
+        },
+        {
+            "userID": 3,
+            "playerName": "Spielr Proasdf",
+            "playerScore": 60
+        },
+        {
+            "userID": 4,
+            "playerName": "Spielr Nodaob",
+            "playerScore": 50
+        },
+        {
+            "userID": 5,
+            "playerName": "Spielr Prozzz",
+            "playerScore": 40
+        },
+        {
+            "userID": 6,
+            "playerName": "Spielr Nozzob",
+            "playerScore": 30
+        },
+        {
+            "userID": 7,
+            "playerName": "Spielr Prott",
+            "playerScore": 20
+        },
+        {
+            "userID": 8,
+            "playerName": "Spielr Nozzob",
+            "playerScore": 10
+        }
+    ]
+}
