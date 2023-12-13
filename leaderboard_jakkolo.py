@@ -22,11 +22,6 @@ class Leaderboard():
         return player_names_scores
 
     def safeAndCloseJSON(self, player_names_scores):
-        # Modify the player names and scores (for example, add a prefix)
-        #player_names = [f"OK{name}" for name in player_names]
-        #player_scores = [score * 2 for score in player_scores]
-        player_names_scores.append(("TestBjörn", 999))
-
         # Create a new JSON structure with modified data
         players = [{'playerName': name, 'playerScore': score} for name, score in player_names_scores]
         # Create a dictionary with the 'players' key
@@ -43,9 +38,12 @@ class Leaderboard():
             file.write(modified_json)
 
     def compareCurrentplayerWithLeaderboard(self, players):
-        players.append(("jüre", 999))
-        players.sort(key = lambda i:i[1], reverse = True)
-        print(players[0][0])
+        test = [("afect", 123), ("tre", 55), ("zua", 234223)]
+        players.insert(1, test[0])
+        if players[0][1] > test[0][1]:
+            print("hudere")
+        #players.sort(key = lambda i:i[1], reverse = True)
+        print(players)
         
         
 """players = [("name", 442), ("test", 25), ("kobi", 232)]
