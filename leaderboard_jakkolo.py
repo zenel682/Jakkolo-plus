@@ -16,7 +16,7 @@ class Leaderboard():
         player_names_scores = [(player['playerName'], player['playerScore']) for player in leaderboard_data['players']]
 
         # Print the arrays
-        print("Player Names:", player_names_scores)
+        #print("Player Names:", player_names_scores)
 
         leaderboard_file.close
         return player_names_scores
@@ -31,7 +31,7 @@ class Leaderboard():
         modified_json = json.dumps(data_to_write, indent=2)
 
         # Print the modified JSON
-        print(modified_json)
+        #print(modified_json)
 
         # Optionally, you can write the modified JSON to a file
         with open(path_to_leaderboard, 'w') as file:
