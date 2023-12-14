@@ -2,13 +2,14 @@ import keyboard
 import time
 
 class KeyCounter:
-    def __init__(self):
+    def __init__(self, stop_flag):
         # Initialize variables
         self.var1 = 0
         self.var2 = 0
         self.var3 = 0
         self.var4 = 0
         self.readKeys = True
+        self.stop_flag = stop_flag
 
         # Register the callback for key releases
         keyboard.on_release(callback=self.on_key_release)
@@ -29,8 +30,8 @@ class KeyCounter:
     def print_variables(self):
         print(f'var1: {self.var1}, var2: {self.var2}, var3: {self.var3}, var4: {self.var4}')
 
-    def run(self):
-        while self.readKeys:
+    def run(self, stop_flag):
+        while not stop_flag.is_set():
             time.sleep(0.1)
             """try:
                 # Keep the script running

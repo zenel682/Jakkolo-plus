@@ -1,5 +1,7 @@
 import customtkinter as ctk
 from leaderboard_jakkolo import Leaderboard
+import threading 
+from keyboard_class import KeyCounter
 
 class MainPage(ctk.CTkFrame):
     global inGame
@@ -48,10 +50,17 @@ class MainPage(ctk.CTkFrame):
     lb = Leaderboard()
     lb_pnames_pscores = lb.openAndReadJSON()
 
+    
+
     def __init__(self, parent, switch_callback):
         ctk.CTkFrame.__init__(self, parent)
         self.parent = parent
         player_count = 1
+
+        self.stop_flag = threading.Event()
+        self.keycounter = KeyCounter(stop_flag=self.stop_flag)
+        
+        self.thread1 = None     
         
         print("Playercount " + str(player_count))
         print("currentlb: " + str(list_current_players_scores))
@@ -73,10 +82,13 @@ class MainPage(ctk.CTkFrame):
         self.explain_button.pack(pady=10)
         self.leaderboard_button = ctk.CTkButton(self, text="Bestenliste", command=lambda: switch_callback(BestenlistPage))
         self.leaderboard_button.pack(pady=10)
-        self.start_button = ctk.CTkButton(self, text="Start", command=lambda: switch_callback(SpielernamenPage))
+        self.start_button = ctk.CTkButton(self, text="Start", command=lambda: [switch_callback(SpielernamenPage), self.start_tracker()])
         self.start_button.pack(pady=10)
         self.settings_button = ctk.CTkButton(self, text="Einstellungen", command=lambda: switch_callback(EinstellungsPage))
         self.settings_button.pack(pady=10)
+
+        self.quit_button = ctk.CTkButton(self, text="Quit", command=lambda: [self.on_close(), self.stop_tracker()])
+        self.quit_button.pack(pady=10)
         self.start_button.configure(state="disabled")
         self.disableStart()
 
@@ -104,6 +116,36 @@ class MainPage(ctk.CTkFrame):
     def getPlayercountAndDisableStart(self, value):
         self.getPlayercount(value)
         self.disableStart()
+
+    def start_tracker(self):
+        print("Start Tracking")
+        # Toggle on Raspi or PC
+        #self.display_var = endschalter.b1_counter
+        #endschalter.read_it = True  
+        try:
+            self.start = True
+            print("Thread started")
+        except Exception as e:
+            print(f"Error starting thread: {e}")
+            self.thread1 = None  # Set thread1 to None if an exception occurs
+
+    def run_keycounter(self):    
+        self.keycounter.run(stop_flag=self.stop_flag)  # Pass the stop_flag to the run method
+    
+    def stop_tracker(self):
+        if self.thread1 and self.thread1.is_alive():
+            self.stop_flag.set()
+            #self.keycounter.stop()
+            self.thread1.join(timeout=3)
+            print("Joined threads")
+        else:
+            print("Thread was not opened yet")
+
+    def on_close(self):
+        print("Close app")
+        self.stop_tracker()
+        self.lb.safeAndCloseJSON(lb_pnames_pscores)
+        self.parent.destroy()
 
 class AnleitungsPage(ctk.CTkFrame):
     def __init__(self, parent, switch_callback):
