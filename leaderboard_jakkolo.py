@@ -39,13 +39,13 @@ class Leaderboard():
 
     def compareCurrentplayerWithLeaderboard(self, players):
         test = [("afect", 123), ("tre", 55), ("zua", 234223)]
-        players.insert(1, test[0])
+        players.insert([0][0], "noob")
         if players[0][1] > test[0][1]:
             print("hudere")
         #players.sort(key = lambda i:i[1], reverse = True)
         print(players)
         
-        
-"""players = [("name", 442), ("test", 25), ("kobi", 232)]
+"""        
+players = [("name", 442), ("test", 25), ("kobi", 232)]
 lb = Leaderboard()
 lb.compareCurrentplayerWithLeaderboard(players)"""

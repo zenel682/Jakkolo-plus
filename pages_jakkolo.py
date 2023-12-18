@@ -50,6 +50,8 @@ class MainPage(ctk.CTkFrame):
     lb = Leaderboard()
     lb_pnames_pscores = lb.openAndReadJSON()
 
+    global keycounter
+
     
 
     def __init__(self, parent, switch_callback):
@@ -58,7 +60,8 @@ class MainPage(ctk.CTkFrame):
         player_count = 1
 
         self.stop_flag = threading.Event()
-        self.keycounter = KeyCounter(stop_flag=self.stop_flag)
+        global keycounter
+        keycounter = KeyCounter(stop_flag=self.stop_flag)
         
         self.thread1 = None     
         
@@ -91,6 +94,7 @@ class MainPage(ctk.CTkFrame):
         self.quit_button.pack(pady=10)
         self.start_button.configure(state="disabled")
         self.disableStart()
+
 
     def getPlayercount(self, value):
         global player_count
@@ -323,6 +327,10 @@ class HindernissPage(ctk.CTkFrame):
     def updateStatus(self):
         global inGame
         inGame = True
+        keycounter.var1 = 0
+        keycounter.var2 = 0
+        keycounter.var3 = 0
+        keycounter.var4 = 0
 
     """def createListOfCurrentPlayers(self):
         print("Create LB WTFFFFFF")
@@ -384,6 +392,22 @@ class SpielPage(ctk.CTkFrame):
         self.endgame_button.pack(pady=10)
         self.explain_button = ctk.CTkButton(self, text="Anleitung", command=lambda: switch_callback(AnleitungsPage))
         self.explain_button.pack(pady=10)
+        print("Players playeD:" + str(players_played_counter))
+
+        self.after(250, self.update_variable)
+
+    def update_variable(self):
+        global count_ones, count_twos, count_threes, count_fours
+        count_ones = keycounter.var1
+        count_twos = keycounter.var2
+        count_threes = keycounter.var3
+        count_fours = keycounter.var4
+        self.count_ones_label.configure(text="P1: " + str(count_ones))
+        self.count_twos_label.configure(text="P2: " + str(count_twos))
+        self.count_threes_label.configure(text="P3: " + str(count_threes))
+        self.count_fours_label.configure(text="P4: " + str(count_fours))
+        self.after(250, self.update_variable)
+
 
     def updateStatus(self):
         global inGame
@@ -394,6 +418,7 @@ class SpielPage(ctk.CTkFrame):
     def resetRoundnumber(self):
         global round_number
         round_number = 1
+        
 
     def clearLeaderboard(self):
         global list_current_players_scores
@@ -402,6 +427,7 @@ class SpielPage(ctk.CTkFrame):
     def increaseRoundnumber(self):
         global round_number
         if round_number < 3:
+            print("hudere")
             round_number += 1
         else:
             round_number = 1
@@ -411,9 +437,9 @@ class SpielPage(ctk.CTkFrame):
         if round_number < 3:
             self.closeround_button = ctk.CTkButton(self, text=f"Ich schliesse Runde {round_number} von 3 ab", command=lambda: [switch_callback(RundenPage), self.increaseRoundnumber()])
             self.closeround_button.pack(pady=10)
-        else: 
-            self.resetRoundnumber()
+        else:      
             self.checkIfThereAreMorePlayers(switch_callback)
+            self.resetRoundnumber()
 
     def createCurrentLeaderboard(self):
         global list_current_players_scores     
@@ -428,15 +454,42 @@ class SpielPage(ctk.CTkFrame):
 
     def checkIfThereAreMorePlayers(self, switch_callback):
         global players_played_counter
-        players_played_counter += 1
         if players_played_counter < player_count:
-            self.endplayerturn_button = ctk.CTkButton(self, text="Ich beende meine Spielzüge, nächster Spieler ist dran", command=lambda: [switch_callback(RundenPage), self.resetRoundnumber()])
+            self.endplayerturn_button = ctk.CTkButton(self, text="Ich beende meine Spielzüge, nächster Spieler ist dran", command=lambda: [switch_callback(RundenPage), self.resetRoundnumber(), self.updateScore()])
             self.endplayerturn_button.pack(pady=10)
         else:
             players_played_counter = 0
             self.endplayerturn_button = ctk.CTkButton(self, text="Spiel ganz abschliessen", command=lambda: [switch_callback(ResultatPage), self.updateStatus(), self.createCurrentLeaderboard(), self.resetRoundnumber()])
             self.endplayerturn_button.pack(pady=10)
-            
+
+    def updateScore(self):
+        print("kappa")
+        global players_played_counter, score, list_current_players_scores
+        self.calculateScore()
+        print("Score: " + str(score))
+        #list_current_players_scores[player_count] = (list_current_players_scores[0][0], score)
+        print(list_current_players_scores)
+        keycounter.var1 = 0
+        keycounter.var2 = 0
+        keycounter.var3 = 0
+        keycounter.var4 = 0
+        score = 0        
+        
+        players_played_counter += 1
+
+    def calculateScore(self):
+        global scores, score, count_ones, count_twos, count_threes, count_fours
+        scores = [count_ones, count_twos, count_threes, count_fours]
+        print("Scoreslist:")
+        print(scores)
+        lowest_count = min(scores)
+        score_ones = count_ones
+        score_twos = count_twos * 2
+        score_threes = count_threes * 3
+        score_fours = count_fours * 4
+        score = lowest_count * 10 + score_ones + score_twos + score_threes + score_fours
+        print("Score in fct: " + str(score))
+        
 
 class ResultatPage(ctk.CTkFrame):
     def __init__(self, parent, switch_callback):
