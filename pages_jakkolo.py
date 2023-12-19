@@ -39,7 +39,7 @@ class MainPage(ctk.CTkFrame):
     global player_count
     player_count = 1
 
-    global current_player
+    global current_player_name
 
     global lb_pnames_pscores
     global lb_current
@@ -356,8 +356,8 @@ class SpielPage(ctk.CTkFrame):
         global puck_count
         global list_current_players_scores
         global players_played_counter
-        global current_player
-        current_player = list_current_players_scores[players_played_counter][0]
+        global current_player_name
+        current_player_name = list_current_players_scores[players_played_counter][0]
         print("create Spielpage")
         print("List:" + str(list_current_players_scores))
 
@@ -365,7 +365,7 @@ class SpielPage(ctk.CTkFrame):
         # Labels
         self.points_label = ctk.CTkLabel(self, text=f"Punkte: {score}")
         self.points_label.pack(pady=5)
-        self.currentplayer_label = ctk.CTkLabel(self, text=current_player)
+        self.currentplayer_label = ctk.CTkLabel(self, text=current_player_name)
         self.currentplayer_label.pack(pady=5)
         self.round_label = ctk.CTkLabel(self, text=f"Runde {round_number}/3")
         self.round_label.pack(pady=5)
@@ -427,7 +427,6 @@ class SpielPage(ctk.CTkFrame):
     def increaseRoundnumber(self):
         global round_number
         if round_number < 3:
-            print("hudere")
             round_number += 1
         else:
             round_number = 1
@@ -444,57 +443,66 @@ class SpielPage(ctk.CTkFrame):
     def createCurrentLeaderboard(self):
         global list_current_players_scores     
         global lb_pnames_pscores
+        global players_played_counter
         #list_current_players_scores.append(("Shöloö", 555555))
+        self.updateScore()
+
+        print("Before Current:")
+        print(list_current_players_scores)
+        print("Before lb:")
+        print(lb_pnames_pscores)
+
 
         for i in range(len(list_current_players_scores)):
             for j in range(len(lb_pnames_pscores)):
                 if list_current_players_scores[i][1] > lb_pnames_pscores[j][1]:
                     lb_pnames_pscores.insert(j, list_current_players_scores[i])
                     break
+        players_played_counter = 0
 
     def checkIfThereAreMorePlayers(self, switch_callback):
         global players_played_counter
-        if players_played_counter < player_count:
+        if players_played_counter < player_count-1:
             self.endplayerturn_button = ctk.CTkButton(self, text="Ich beende meine Spielzüge, nächster Spieler ist dran", command=lambda: [switch_callback(RundenPage), self.resetRoundnumber(), self.updateScore()])
             self.endplayerturn_button.pack(pady=10)
-        else:
-            players_played_counter = 0
-            self.endplayerturn_button = ctk.CTkButton(self, text="Spiel ganz abschliessen", command=lambda: [switch_callback(ResultatPage), self.updateStatus(), self.createCurrentLeaderboard(), self.resetRoundnumber()])
+        else:      
+            self.endplayerturn_button = ctk.CTkButton(self, text="Spiel ganz abschliessen", command=lambda: [self.createCurrentLeaderboard(), switch_callback(ResultatPage), self.updateStatus(), self.resetRoundnumber()])
             self.endplayerturn_button.pack(pady=10)
 
     def updateScore(self):
         print("kappa")
         global players_played_counter, score, list_current_players_scores
         self.calculateScore()
-        print("Score: " + str(score))
-        #list_current_players_scores[player_count] = (list_current_players_scores[0][0], score)
-        print(list_current_players_scores)
+        print(players_played_counter)
+        list_current_players_scores[players_played_counter] = (current_player_name, score)
         keycounter.var1 = 0
         keycounter.var2 = 0
         keycounter.var3 = 0
         keycounter.var4 = 0
         score = 0        
-        
         players_played_counter += 1
 
     def calculateScore(self):
         global scores, score, count_ones, count_twos, count_threes, count_fours
         scores = [count_ones, count_twos, count_threes, count_fours]
-        print("Scoreslist:")
-        print(scores)
         lowest_count = min(scores)
         score_ones = count_ones
         score_twos = count_twos * 2
         score_threes = count_threes * 3
         score_fours = count_fours * 4
         score = lowest_count * 10 + score_ones + score_twos + score_threes + score_fours
-        print("Score in fct: " + str(score))
         
 
 class ResultatPage(ctk.CTkFrame):
     def __init__(self, parent, switch_callback):
         ctk.CTkFrame.__init__(self, parent)
         self.parent = parent
+        global list_current_players_scores
+        global lb_pnames_pscores
+        print("Current: ") 
+        print(list_current_players_scores)
+        print("LB total: ")
+        print(lb_pnames_pscores)
         
         # Labels
         self.label2 = ctk.CTkLabel(self, text="Gratulation!")
