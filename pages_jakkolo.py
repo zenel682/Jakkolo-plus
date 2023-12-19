@@ -397,15 +397,17 @@ class SpielPage(ctk.CTkFrame):
         self.after(250, self.update_variable)
 
     def update_variable(self):
-        global count_ones, count_twos, count_threes, count_fours
+        global count_ones, count_twos, count_threes, count_fours, score, scores
         count_ones = keycounter.var1
         count_twos = keycounter.var2
         count_threes = keycounter.var3
         count_fours = keycounter.var4
+        self.calculateScore()
         self.count_ones_label.configure(text="P1: " + str(count_ones))
         self.count_twos_label.configure(text="P2: " + str(count_twos))
         self.count_threes_label.configure(text="P3: " + str(count_threes))
         self.count_fours_label.configure(text="P4: " + str(count_fours))
+        self.points_label.configure(text="Punkte: " + str(score))
         self.after(250, self.update_variable)
 
 
@@ -444,7 +446,6 @@ class SpielPage(ctk.CTkFrame):
         global list_current_players_scores     
         global lb_pnames_pscores
         global players_played_counter
-        #list_current_players_scores.append(("Shöloö", 555555))
         self.updateScore()
 
         print("Before Current:")
@@ -499,10 +500,6 @@ class ResultatPage(ctk.CTkFrame):
         self.parent = parent
         global list_current_players_scores
         global lb_pnames_pscores
-        print("Current: ") 
-        print(list_current_players_scores)
-        print("LB total: ")
-        print(lb_pnames_pscores)
         
         # Labels
         self.label2 = ctk.CTkLabel(self, text="Gratulation!")
@@ -545,11 +542,26 @@ class RundenPage(ctk.CTkFrame):
     def __init__(self, parent, switch_callback):
         ctk.CTkFrame.__init__(self, parent)
         self.parent = parent
+        global count_ones, count_twos, count_threes, count_fours
+        self.ones_during_pause = 0
+        self.ones_before_pause = count_ones
+        self.twos_during_pause = 0
+        self.twos_before_pause = count_twos
+        self.threes_during_pause = 0
+        self.threes_before_pause = count_threes
+        self.fours_during_pause = 0
+        self.fours_before_pause = count_fours
         
         # Labels
         self.label2 = ctk.CTkLabel(self, text="Zwischen Runden Page")
         self.label2.pack(pady=20)
 
         # Buttons
-        self.again_button = ctk.CTkButton(self, text="Pucks eingesammelt", command=lambda: switch_callback(SpielPage))
+        self.again_button = ctk.CTkButton(self, text="Pucks eingesammelt", command=lambda: [self.recalculateCount(), switch_callback(SpielPage)])
         self.again_button.pack(pady=10)
+
+    def recalculateCount(self):
+        keycounter.var1 = self.ones_before_pause - self.ones_during_pause
+        keycounter.var2 = self.twos_before_pause - self.threes_during_pause
+        keycounter.var3 = self.threes_before_pause - self.threes_during_pause
+        keycounter.var4 = self.fours_before_pause - self.fours_during_pause
