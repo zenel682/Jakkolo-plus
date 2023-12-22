@@ -1,5 +1,4 @@
 import customtkinter as ctk
-import json
 from pages_jakkolo import MainPage
 
 class App(ctk.CTk):

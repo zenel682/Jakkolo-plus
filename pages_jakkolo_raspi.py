@@ -2,6 +2,7 @@ import customtkinter as ctk
 from leaderboard_jakkolo import Leaderboard
 import threading 
 from keyboard_class import KeyCounter
+from gpio_v2 import Endschalter
 
 class MainPage(ctk.CTkFrame):
     global inGame
@@ -50,7 +51,8 @@ class MainPage(ctk.CTkFrame):
     lb = Leaderboard()
     lb_pnames_pscores = lb.openAndReadJSON()
 
-    global keycounter    
+    #global keycounter
+    global endschalter    
 
     def __init__(self, parent, switch_callback):
         ctk.CTkFrame.__init__(self, parent)
@@ -58,8 +60,12 @@ class MainPage(ctk.CTkFrame):
         player_count = 1
 
         self.stop_flag = threading.Event()
-        global keycounter
-        keycounter = KeyCounter(stop_flag=self.stop_flag)
+        #global keycounter
+        #keycounter = KeyCounter(stop_flag=self.stop_flag)
+
+        global endschalter
+        endschalter = Endschalter(stop_flag=self.stop_flag)
+
         
         self.thread1 = None     
         
@@ -326,26 +332,15 @@ class HindernissPage(ctk.CTkFrame):
     def updateStatus(self):
         global inGame
         inGame = True
-        keycounter.var1 = 0
-        keycounter.var2 = 0
-        keycounter.var3 = 0
-        keycounter.var4 = 0
+        #keycounter.var1 = 0
+        #keycounter.var2 = 0
+        #keycounter.var3 = 0
+        #keycounter.var4 = 0
+        endschalter.b1_counter = 0
+        endschalter.b2_counter = 0
+        endschalter.b3_counter = 0
+        endschalter.b4_counter = 0
 
-    """def createListOfCurrentPlayers(self):
-        print("Create LB WTFFFFFF")
-        global name_player_1, name_player_2, name_player_3, name_player_4
-        global list_current_players_scores
-        if player_count >= 1:
-            list_current_players_scores.append((name_player_1, score_player_1))
-        if player_count >= 2:
-            list_current_players_scores.append((name_player_2, score_player_2))
-        if player_count >= 3:
-            list_current_players_scores.append((name_player_3, score_player_3))
-        if player_count == 4:
-            list_current_players_scores.append((name_player_4, score_player_4))
-
-        print("List of current players and scores: " + str(list_current_players_scores))
-    """
 class SpielPage(ctk.CTkFrame):
     def __init__(self, parent, switch_callback):
         ctk.CTkFrame.__init__(self, parent)
@@ -397,10 +392,14 @@ class SpielPage(ctk.CTkFrame):
 
     def update_variable(self):
         global count_ones, count_twos, count_threes, count_fours, score, scores
-        count_ones = keycounter.var1
-        count_twos = keycounter.var2
-        count_threes = keycounter.var3
-        count_fours = keycounter.var4
+        #count_ones = keycounter.var1
+        #count_twos = keycounter.var2
+        #count_threes = keycounter.var3
+        #count_fours = keycounter.var4
+        count_ones = endschalter.b1_counter
+        count_twos = endschalter.b2_counter
+        count_threes = endschalter.b3_counter
+        count_fours = endschalter.b4_counter
         self.calculateScore()
         self.count_ones_label.configure(text="P1: " + str(count_ones))
         self.count_twos_label.configure(text="P2: " + str(count_twos))
@@ -475,10 +474,14 @@ class SpielPage(ctk.CTkFrame):
         self.calculateScore()
         print(players_played_counter)
         list_current_players_scores[players_played_counter] = (current_player_name, score)
-        keycounter.var1 = 0
-        keycounter.var2 = 0
-        keycounter.var3 = 0
-        keycounter.var4 = 0
+        #keycounter.var1 = 0
+        #keycounter.var2 = 0
+        #keycounter.var3 = 0
+        #keycounter.var4 = 0
+        endschalter.b1_counter = 0
+        endschalter.b2_counter = 0
+        endschalter.b3_counter = 0
+        endschalter.b4_counter = 0
         score = 0        
         players_played_counter += 1
 
@@ -560,7 +563,12 @@ class RundenPage(ctk.CTkFrame):
         self.again_button.pack(pady=10)
 
     def recalculateCount(self):
-        keycounter.var1 = self.ones_before_pause - self.ones_during_pause
-        keycounter.var2 = self.twos_before_pause - self.threes_during_pause
-        keycounter.var3 = self.threes_before_pause - self.threes_during_pause
-        keycounter.var4 = self.fours_before_pause - self.fours_during_pause
+        #keycounter.var1 = self.ones_before_pause - self.ones_during_pause
+        #keycounter.var2 = self.twos_before_pause - self.threes_during_pause
+        #keycounter.var3 = self.threes_before_pause - self.threes_during_pause
+        #keycounter.var4 = self.fours_before_pause - self.fours_during_pause
+
+        endschalter.b1_counter = self.ones_before_pause - self.ones_during_pause
+        endschalter.b2_counter = self.twos_before_pause - self.threes_during_pause
+        endschalter.b3_counter = self.threes_before_pause - self.threes_during_pause
+        endschalter.b4_counter = self.fours_before_pause - self.fours_during_pause

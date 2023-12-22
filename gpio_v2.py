@@ -13,13 +13,14 @@ global read_it
 
 
 class Endschalter:
-    def __init__(self):
+    def __init__(self, stop_flag):
         # Setup the GPIO pin as an input with a pull-up resistor
         GPIO.setup(button_pin_1, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
         GPIO.setup(button_pin_2, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
         GPIO.setup(button_pin_3, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
         GPIO.setup(button_pin_4, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
         self.read_it = True
+        self.stop_flag = stop_flag
         self.bs1_old = 1
         self.bs2_old = 1
         self.bs3_old = 1
@@ -32,9 +33,9 @@ class Endschalter:
         self.read_it = False
         GPIO.cleanup()
     
-    def read_endschalter(self):
+    def read_endschalter(self, stop_flag):
         try:
-            while self.read_it:
+            while not stop_flag.is_set():
                 # Read the state of the button
                 button_state_1 = GPIO.input(button_pin_1)
                 button_state_2 = GPIO.input(button_pin_2)
