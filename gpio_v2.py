@@ -1,5 +1,6 @@
 import RPi.GPIO as GPIO
 import time
+import threading
 
 # Set the GPIO mode
 GPIO.setmode(GPIO.BOARD)
@@ -29,48 +30,51 @@ class Endschalter:
         self.b2_counter = 0
         self.b3_counter = 0
         self.b4_counter = 0
+        print("init gpio")
+        
     def stop(self):
         self.read_it = False
         GPIO.cleanup()
+        
+    def read(self):
+       # Read the state of the button
+       button_state_1 = GPIO.input(button_pin_1)
+       button_state_2 = GPIO.input(button_pin_2)
+       button_state_3 = GPIO.input(button_pin_3)
+       button_state_4 = GPIO.input(button_pin_4)
+
+       # Add 1 if state changes
+       if self.bs1_old != button_state_1 and button_state_1 == 1:
+          self.b1_counter += 1
+       if self.bs2_old != button_state_2 and button_state_2 == 1:
+          self.b2_counter += 1
+       if self.bs3_old != button_state_3 and button_state_3 == 1:
+          self.b3_counter += 1
+       if self.bs4_old != button_state_4 and button_state_4 == 1:
+          self.b4_counter += 1
+
+
+       # Print the state
+       print("Button state 1:", button_state_1, self.b1_counter)
+       print("Button state 2:", button_state_2, self.b2_counter)
+       print("Button state 3:", button_state_3, self.b3_counter)
+       print("Button state 4:", button_state_4, self.b4_counter)
+       # Add a delay to avoid rapid readings
+
+       # Update old values
+       self.bs1_old = button_state_1
+       self.bs2_old = button_state_2
+       self.bs3_old = button_state_3
+       self.bs4_old = button_state_4
+       
+       self.read()
+
     
     def read_endschalter(self, stop_flag):
-        try:
-            while not stop_flag.is_set():
-                # Read the state of the button
-                button_state_1 = GPIO.input(button_pin_1)
-                button_state_2 = GPIO.input(button_pin_2)
-                button_state_3 = GPIO.input(button_pin_3)
-                button_state_4 = GPIO.input(button_pin_4)
-
-                # Add 1 if state changes
-                if self.bs1_old != button_state_1 and button_state_1 == 1:
-                    self.b1_counter += 1
-                if self.bs2_old != button_state_2 and button_state_2 == 1:
-                    self.b2_counter += 1
-                if self.bs3_old != button_state_3 and button_state_3 == 1:
-                    self.b3_counter += 1
-                if self.bs4_old != button_state_4 and button_state_4 == 1:
-                    self.b4_counter += 1
-           
-            
-                # Print the state
-                print("Button state 1:", button_state_1, self.b1_counter)
-                print("Button state 2:", button_state_2, self.b2_counter)
-                print("Button state 3:", button_state_3, self.b3_counter)
-                print("Button state 4:", button_state_4, self.b4_counter)
-                # Add a delay to avoid rapid readings
-                time.sleep(0.1)
-                
-                # Update old values
-                self.bs1_old = button_state_1
-                self.bs2_old = button_state_2
-                self.bs3_old = button_state_3
-                self.bs4_old = button_state_4
-
-        except KeyboardInterrupt:
-            print("Exiting...")
-
-            
-#if __name__ == "__main__":
-#    end = Endschalter()
-#    end.read_endschalter()
+       while not stop_flag.is_set():
+          time.sleep(0.1)
+       
+if __name__ == "__main__":
+    stop_flag = threading.Event()    
+    end = Endschalter(stop_flag)
+    end.read_endschalter(stop_flag)

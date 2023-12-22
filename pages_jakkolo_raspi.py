@@ -2,7 +2,7 @@ import customtkinter as ctk
 from leaderboard_jakkolo import Leaderboard
 import threading 
 from keyboard_class import KeyCounter
-from gpio_v2 import Endschalter
+from gpio_class import Endschalter
 
 class MainPage(ctk.CTkFrame):
     global inGame
@@ -53,6 +53,8 @@ class MainPage(ctk.CTkFrame):
 
     #global keycounter
     global endschalter    
+    global thread1
+    global event
 
     def __init__(self, parent, switch_callback):
         ctk.CTkFrame.__init__(self, parent)
@@ -64,10 +66,12 @@ class MainPage(ctk.CTkFrame):
         #keycounter = KeyCounter(stop_flag=self.stop_flag)
 
         global endschalter
-        endschalter = Endschalter(stop_flag=self.stop_flag)
+        endschalter = Endschalter()
 
-        
-        self.thread1 = None     
+        global thread1
+        thread1 = None
+        global event   
+        event = threading.Event()  
         
         print("Playercount " + str(player_count))
         print("currentlb: " + str(list_current_players_scores))
@@ -127,25 +131,35 @@ class MainPage(ctk.CTkFrame):
         self.disableStart()
 
     def start_tracker(self):
+        global event
         print("Start Tracking")
         # Toggle on Raspi or PC
         #self.display_var = endschalter.b1_counter
-        #endschalter.read_it = True  
+        endschalter.read_it = True  
+        print("Set endschalter read_it to true")
         try:
-            self.start = True
+            #self.start = True
+            endschalter.read_it = True
+            thread1 = threading.Thread(target=endschalter.read_endschalter, args=(event,))
+            thread1.setDaemon(True)
+            thread1.start()
             print("Thread started")
         except Exception as e:
             print(f"Error starting thread: {e}")
-            self.thread1 = None  # Set thread1 to None if an exception occurs
+            thread1 = None  # Set thread1 to None if an exception occurs
 
     def run_keycounter(self):    
-        self.keycounter.run(stop_flag=self.stop_flag)  # Pass the stop_flag to the run method
+        #self.keycounter.run(stop_flag=self.stop_flag)  # Pass the stop_flag to the run method
+        self.endschalter.read_endschalter()
     
     def stop_tracker(self):
-        if self.thread1 and self.thread1.is_alive():
-            self.stop_flag.set()
+        global event
+        if thread1 and thread1.is_alive():
+            event.set()
+            self.endschalter.stop()
+            #self.stop_flag.set()
             #self.keycounter.stop()
-            self.thread1.join(timeout=3)
+            thread1.join(timeout=3)
             print("Joined threads")
         else:
             print("Thread was not opened yet")

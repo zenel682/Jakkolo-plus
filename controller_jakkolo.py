@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from pages_jakkolo import MainPage
+from pages_jakkolo_raspi import MainPage
 
 class App(ctk.CTk):
     def __init__(self, root):

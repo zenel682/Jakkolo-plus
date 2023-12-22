@@ -1,5 +1,6 @@
 import RPi.GPIO as GPIO
 import time
+import threading
 
 # Set the GPIO mode
 GPIO.setmode(GPIO.BOARD)
@@ -14,6 +15,7 @@ global read_it
 
 class Endschalter:
     def __init__(self):
+        print("EndschalterKlasse")
         # Setup the GPIO pin as an input with a pull-up resistor
         GPIO.setup(button_pin_1, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
         GPIO.setup(button_pin_2, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
@@ -32,9 +34,12 @@ class Endschalter:
         self.read_it = False
         GPIO.cleanup()
     
-    def read_endschalter(self):
+    def read_endschalter(self, event: threading.Event):
+        print("Here hudere")
         try:
-            while self.read_it:
+            print("ole2")
+            while not event.is_set():
+                print("niadh")
                 # Read the state of the button
                 button_state_1 = GPIO.input(button_pin_1)
                 button_state_2 = GPIO.input(button_pin_2)
@@ -69,7 +74,3 @@ class Endschalter:
         except KeyboardInterrupt:
             print("Exiting...")
 
-            
-#if __name__ == "__main__":
-#    end = Endschalter()
-#    end.read_endschalter()
