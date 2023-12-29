@@ -82,15 +82,7 @@ class MainPage(ctk.CTkFrame):
         
         print("Playercount " + str(player_count))
         print("currentlb: " + str(list_current_players_scores))
-
-        # Labels
-        #self.label = ctk.CTkLabel(self, text="Jakkolo Plus", font=big_font_mp)
-        #self.label.pack(padx=20, pady=20, side=ctk.TOP)
-
-        
-        
-
-        
+     
         # Labels
         self.label = ctk.CTkLabel(self, text="Jakkolo Plus", font=big_font_mp, text_color="#547AA5")
         self.label.pack(pady=10, anchor=ctk.N, side=ctk.TOP, fill=ctk.BOTH, expand=True)
@@ -105,7 +97,6 @@ class MainPage(ctk.CTkFrame):
         # Buttons
         #self.settings_button = ctk.CTkButton(self, text="", image=ctk.CTkImage(light_image=Image.open("icons\settings_icon.png"), dark_image=Image.open("icons\settings_icon.png"), size=(30,30)), command=lambda: switch_callback(EinstellungsPage))
         #self.settings_button.pack(padx=100, pady=30, side=ctk.RIGHT)
-        
 
         self.quit_button = ctk.CTkButton(master=self, width=130, height=60, corner_radius=25, text="Quit", text_color="#FFFFFF", font=medium_font_mp, fg_color="#D9D9D9", hover_color="#828282", command=lambda: [self.on_close(), self.stop_tracker()])
         self.quit_button.pack(pady=10, anchor=ctk.CENTER,side=ctk.BOTTOM)
@@ -115,12 +106,6 @@ class MainPage(ctk.CTkFrame):
         self.explain_button.pack(pady=10, anchor=ctk.CENTER,side=ctk.BOTTOM)
         self.start_button = ctk.CTkButton(master=self, width=500, height=90, corner_radius=25, text="Start", text_color="#FFFFFF", font=big_font_mp, fg_color="#50D8D7", hover_color="#209190", command=lambda: [switch_callback(SpielernamenPage), self.start_tracker()])
         self.start_button.pack(pady=10, anchor=ctk.CENTER, side=ctk.BOTTOM)
-        
-        
-        
-        #self.start_button.configure(state="disabled")
-        #self.disableStart()
-
 
     def getPlayercount(self, value):
         global player_count
@@ -245,25 +230,25 @@ class SpielernamenPage(ctk.CTkFrame):
         self.parent = parent
         
         # Labels
-        self.title = ctk.CTkLabel(self, text="Spielernamen eingeben")
+        self.title = ctk.CTkLabel(self, text="Spielernamen eingeben", font=big_font_mp, text_color="#FFFFFF")
         self.title.pack(pady=20)
 
         # Inputs
-        self.playername_1_input = ctk.CTkEntry(self, placeholder_text="Spielername 1")
-        self.playername_1_input.pack(pady=5)
-        self.playername_2_input = ctk.CTkEntry(self, placeholder_text="Spielername 2")
-        self.playername_2_input.pack(pady=5)
-        self.playername_3_input = ctk.CTkEntry(self, placeholder_text="Spielername 3")
-        self.playername_3_input.pack(pady=5)
-        self.playername_4_input = ctk.CTkEntry(self, placeholder_text="Spielername 4")
-        self.playername_4_input.pack(pady=5)
+        self.playername_1_input = ctk.CTkEntry(self, width=350, height=50, corner_radius=15, fg_color="#4F5165", font=medium_font_mp, text_color="#FFFFFF", placeholder_text="Spielername 1")
+        self.playername_1_input.pack(pady=15)
+        self.playername_2_input = ctk.CTkEntry(self, width=350, height=50, corner_radius=15, fg_color="#4F5165", font=medium_font_mp, text_color="#FFFFFF", placeholder_text="Spielername 2")
+        self.playername_2_input.pack(pady=15)
+        self.playername_3_input = ctk.CTkEntry(self, width=350, height=50, corner_radius=15, fg_color="#4F5165", font=medium_font_mp, text_color="#FFFFFF", placeholder_text="Spielername 3")
+        self.playername_3_input.pack(pady=15)
+        self.playername_4_input = ctk.CTkEntry(self, width=350, height=50, corner_radius=15, fg_color="#4F5165", font=medium_font_mp, text_color="#FFFFFF", placeholder_text="Spielername 4")
+        self.playername_4_input.pack(pady=15)
         self.disableInputs()
 
         # Buttons
-        self.back_button = ctk.CTkButton(self, text="zurück", command=lambda: [switch_callback(MainPage), self.clearPlayercount(), self.clearLeaderboard()])
-        self.back_button.pack(pady=10)
-        self.forward_button = ctk.CTkButton(self, text="weiter", command=lambda: [switch_callback(HindernissPage), self.getSpielernamen(), self.createListOfCurrentPlayers()])
-        self.forward_button.pack(pady=10)
+        self.back_button = ctk.CTkButton(master=self, width=130, height=60, corner_radius=25, text="zurück", text_color="#FFFFFF", font=medium_font_mp, fg_color="#D9D9D9", hover_color="#828282", command=lambda: [switch_callback(MainPage), self.clearPlayercount(), self.clearLeaderboard()])
+        self.back_button.pack(pady=10, anchor=ctk.CENTER,side=ctk.BOTTOM)
+        self.forward_button = ctk.CTkButton(master=self, width=130, height=60, corner_radius=25, text="weiter", text_color="#FFFFFF", font=medium_font_mp, fg_color="#D9D9D9", hover_color="#828282", command=lambda: [switch_callback(HindernissPage), self.getSpielernamen(), self.createListOfCurrentPlayers()])
+        self.forward_button.pack(pady=10, anchor=ctk.CENTER,side=ctk.BOTTOM)
 
     def getSpielernamen(self):
         global name_player_1, name_player_2, name_player_3, name_player_4
