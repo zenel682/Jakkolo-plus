@@ -168,7 +168,7 @@ class AnleitungsPage(ctk.CTkFrame):
         self.parent = parent
         
         # Labels
-        self.label2 = ctk.CTkLabel(self, text="Anleitung")
+        self.label2 = ctk.CTkLabel(self, text="Anleitung", font=big_font_mp, text_color="#FFFFFF")
         self.label2.pack(pady=20)
 
         # Buttons
@@ -176,11 +176,11 @@ class AnleitungsPage(ctk.CTkFrame):
 
     def checkStatus(self, switch_callback):
         if inGame:
-            self.back_button = ctk.CTkButton(self, text="zurück zum Spiel", command=lambda: switch_callback(SpielPage))
-            self.back_button.pack(pady=10)
+            self.back_button = ctk.CTkButton(master=self, width=130, height=60, corner_radius=25, text="zurück zum Spiel", text_color="#FFFFFF", font=medium_font_mp, fg_color="#D9D9D9", hover_color="#828282", command=lambda: switch_callback(SpielPage))
+            self.back_button.pack(pady=5, anchor=ctk.CENTER,side=ctk.BOTTOM)
         else: 
-            self.back_button = ctk.CTkButton(self, text="zurück", command=lambda: switch_callback(MainPage))
-            self.back_button.pack(pady=10)
+            self.back_button = ctk.CTkButton(master=self, width=130, height=60, corner_radius=25, text="zurück", text_color="#FFFFFF", font=medium_font_mp, fg_color="#D9D9D9", hover_color="#828282", command=lambda: switch_callback(MainPage))
+            self.back_button.pack(pady=5, anchor=ctk.CENTER,side=ctk.BOTTOM)
 
 class BestenlistPage(ctk.CTkFrame):
     def __init__(self, parent, switch_callback, fg_color):
@@ -188,27 +188,31 @@ class BestenlistPage(ctk.CTkFrame):
         self.parent = parent
         
         # Labels
-        self.label2 = ctk.CTkLabel(self, text="Bestenliste")
-        self.label2.pack(pady=20)
-
-        # Buttons
-        self.back_button = ctk.CTkButton(self, text="zurück", command=lambda: switch_callback(MainPage))
-        self.back_button.pack(pady=10)
+        self.label2 = ctk.CTkLabel(self, text="Bestenliste", font=big_font_mp, text_color="#FFFFFF")
+        self.label2.pack(pady=15)
 
         # Leaderboard
-        self.createLeaderboard()
-        
+        self.createLeaderboard(fg_color=fg_color)
 
-    def createLeaderboard(self):
+        # Buttons
+        self.back_button = ctk.CTkButton(master=self, width=130, height=60, corner_radius=25, text="zurück", text_color="#FFFFFF", font=medium_font_mp, fg_color="#D9D9D9", hover_color="#828282", command=lambda: switch_callback(MainPage))
+        self.back_button.pack(pady=5, anchor=ctk.CENTER,side=ctk.BOTTOM)
+
+    def createLeaderboard(self, fg_color):
             
         for i in range(10):
             # Create a frame for each row of three labels
-            frame = ctk.CTkFrame(self)
+            frame = ctk.CTkFrame(self, fg_color=fg_color)
             frame.pack(side=ctk.TOP)
 
-            self.rank_label = ctk.CTkLabel(frame, width=50, height=30, corner_radius=3, bg_color="blue", fg_color="blue", text_color="yellow", text=f"{i+1}.")
-            self.name_label = ctk.CTkLabel(frame, width=200, height=30, corner_radius=3, bg_color="blue", fg_color="blue", text_color="yellow", text=lb_pnames_pscores[i][0])
-            self.score_label = ctk.CTkLabel(frame, width=200, height=30, corner_radius=3, bg_color="blue", fg_color="blue", text_color="yellow", text=lb_pnames_pscores[i][1])
+            if i % 2:
+                colorpattern = "#547AA5"
+            else:
+                colorpattern = "#4F5165"
+
+            self.rank_label = ctk.CTkLabel(frame, width=50, height=35, corner_radius=5, anchor=ctk.CENTER, fg_color=colorpattern, text_color="#FFFFFF", font=small_font_mp, text=f"{i+1}.")
+            self.name_label = ctk.CTkLabel(frame, width=350, height=35, corner_radius=5, anchor=ctk.W, fg_color=colorpattern, text_color="#FFFFFF", font=small_font_mp, text=lb_pnames_pscores[i][0])
+            self.score_label = ctk.CTkLabel(frame, width=125, height=35, corner_radius=5, anchor=ctk.E, fg_color=colorpattern, text_color="#FFFFFF", font=small_font_mp, text=lb_pnames_pscores[i][1])
             
             self.rank_label.pack(side=ctk.LEFT, padx=5, pady=5)
             self.name_label.pack(side=ctk.LEFT, padx=5)
@@ -219,7 +223,7 @@ class EinstellungsPage(ctk.CTkFrame):
         ctk.CTkFrame.__init__(self, parent, fg_color=fg_color)
         self.parent = parent
         
-        self.label2 = ctk.CTkLabel(self, text="Einstellungen")
+        self.label2 = ctk.CTkLabel(self, text="Einstellungen", font=big_font_mp, text_color="#FFFFFF")
         self.label2.pack(pady=20)
         self.button = ctk.CTkButton(self, text="zurück", command=lambda: switch_callback(MainPage))
         self.button.pack(pady=10)
@@ -323,17 +327,16 @@ class HindernissPage(ctk.CTkFrame):
         self.parent = parent
         
         # Labels
-        self.label2 = ctk.CTkLabel(self, text="Hindernissplan")
+        self.label2 = ctk.CTkLabel(self, text="Hindernissplan", font=big_font_mp, text_color="#FFFFFF")
         self.label2.pack(pady=20)
 
         # Buttons
-        self.back_button = ctk.CTkButton(self, text="zurück", command=lambda: switch_callback(SpielernamenPage))
+        self.back_button = ctk.CTkButton(master=self, width=130, height=60, corner_radius=25, text="zurück", text_color="#FFFFFF", font=medium_font_mp, fg_color="#D9D9D9", hover_color="#828282", command=lambda: switch_callback(SpielernamenPage))
         self.back_button.pack(pady=10)
-        self.startgame_button = ctk.CTkButton(self, text="Spiel starten", command=lambda: [switch_callback(SpielPage), self.updateStatus()])
+        self.startgame_button = ctk.CTkButton(master=self, width=130, height=60, corner_radius=25, text="Spiel starten", text_color="#FFFFFF", font=medium_font_mp, fg_color="#D9D9D9", hover_color="#828282", command=lambda: [switch_callback(SpielPage), self.updateStatus()])
         self.startgame_button.pack(pady=10)
-        self.info_button = ctk.CTkButton(self, text="Info", command=lambda: switch_callback(InfoPage))
+        self.info_button = ctk.CTkButton(master=self, width=130, height=60, corner_radius=25, text="Info", text_color="#FFFFFF", font=medium_font_mp, fg_color="#FF5757", hover_color="#CD0000", command=lambda: switch_callback(InfoPage))
         self.info_button.pack(pady=10)
-        print("DONUT")
     
     def updateStatus(self):
         global inGame
@@ -343,21 +346,6 @@ class HindernissPage(ctk.CTkFrame):
         keycounter.var3 = 0
         keycounter.var4 = 0
 
-    """def createListOfCurrentPlayers(self):
-        print("Create LB WTFFFFFF")
-        global name_player_1, name_player_2, name_player_3, name_player_4
-        global list_current_players_scores
-        if player_count >= 1:
-            list_current_players_scores.append((name_player_1, score_player_1))
-        if player_count >= 2:
-            list_current_players_scores.append((name_player_2, score_player_2))
-        if player_count >= 3:
-            list_current_players_scores.append((name_player_3, score_player_3))
-        if player_count == 4:
-            list_current_players_scores.append((name_player_4, score_player_4))
-
-        print("List of current players and scores: " + str(list_current_players_scores))
-    """
 class SpielPage(ctk.CTkFrame):
     def __init__(self, parent, switch_callback, fg_color):
         ctk.CTkFrame.__init__(self, parent, fg_color=fg_color)
@@ -542,12 +530,12 @@ class InfoPage(ctk.CTkFrame):
         self.parent = parent
         
         # Labels
-        self.label2 = ctk.CTkLabel(self, text="Info")
+        self.label2 = ctk.CTkLabel(self, text="Info", font=big_font_mp, text_color="#FFFFFF")
         self.label2.pack(pady=20)
 
         # Buttons
-        self.again_button = ctk.CTkButton(self, text="OK", command=lambda: switch_callback(HindernissPage))
-        self.again_button.pack(pady=10)
+        self.again_button = ctk.CTkButton(master=self, width=130, height=60, corner_radius=25, text="OK", text_color="#FFFFFF", font=medium_font_mp, fg_color="#D9D9D9", hover_color="#828282", command=lambda: switch_callback(HindernissPage))
+        self.again_button.pack(pady=5, anchor=ctk.CENTER,side=ctk.BOTTOM)
 
 class RundenPage(ctk.CTkFrame):
     def __init__(self, parent, switch_callback, fg_color):
@@ -564,12 +552,12 @@ class RundenPage(ctk.CTkFrame):
         self.fours_before_pause = count_fours
         
         # Labels
-        self.label2 = ctk.CTkLabel(self, text="Zwischen Runden Page")
+        self.label2 = ctk.CTkLabel(self, text="Zwischen Runden Page", font=big_font_mp, text_color="#FFFFFF")
         self.label2.pack(pady=20)
 
         # Buttons
-        self.again_button = ctk.CTkButton(self, text="Pucks eingesammelt", command=lambda: [self.recalculateCount(), switch_callback(SpielPage)])
-        self.again_button.pack(pady=10)
+        self.again_button = ctk.CTkButton(master=self, width=130, height=60, corner_radius=25, text="Pucks eingesammelt", text_color="#FFFFFF", font=medium_font_mp, fg_color="#D9D9D9", hover_color="#828282", command=lambda: [self.recalculateCount(), switch_callback(SpielPage)])
+        self.again_button.pack(pady=5, anchor=ctk.CENTER,side=ctk.BOTTOM)
 
     def recalculateCount(self):
         keycounter.var1 = self.ones_before_pause - self.ones_during_pause
