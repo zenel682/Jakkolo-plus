@@ -4,9 +4,8 @@ from pages_jakkolo import MainPage
 class App(ctk.CTk):
     def __init__(self, root):
         self.root = root
-        root.title("Titelblatt")
         root.geometry("1024x600")
-        root.resizable(False, False)
+        root.overrideredirect(True)
         root.configure(fg_color="#474044")
 
         self.current_frame = None
