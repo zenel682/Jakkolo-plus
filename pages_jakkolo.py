@@ -2,7 +2,7 @@ import customtkinter as ctk
 from leaderboard_jakkolo import Leaderboard
 import threading 
 from keyboard_class import KeyCounter
-from PIL import Image
+from PIL import Image, ImageTk
 
 class MainPage(ctk.CTkFrame):
     global inGame
@@ -359,6 +359,17 @@ class SpielPage(ctk.CTkFrame):
         current_player_name = list_current_players_scores[players_played_counter][0]
         print("create Spielpage")
         print("List:" + str(list_current_players_scores))
+
+        #self.goal_image = ctk.CTkImage(light_image=Image.open("icons\jakkolo_goal.png"), dark_image=Image.open("icons\jakkolo_goal.png"), size=(740, 224))
+        self.goal_image = ImageTk.PhotoImage(Image.open("icons\jakkolo_goal.png"))
+        self.canvas = ctk.CTkCanvas(self, width=740, height=224)
+        self.canvas.pack(fill="both", expand=True)
+        self.canvas.create_image(0, 0, image=self.goal_image)
+
+        #self.goal_image = ctk.CTkImage(light_image=Image.open("icons\jakkolo_goal.png"), dark_image=Image.open("icons\jakkolo_goal.png"), size=(740, 224))
+        #self.goal_label = ctk.CTkLabel(self, image=self.goal_image, text="")
+        #self.goal_label.pack()
+        
 
         
         # Labels
