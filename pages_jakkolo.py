@@ -2,6 +2,7 @@ import customtkinter as ctk
 from leaderboard_jakkolo import Leaderboard
 import threading 
 from keyboard_class import KeyCounter
+from PIL import Image
 
 class MainPage(ctk.CTkFrame):
     global inGame
@@ -50,49 +51,75 @@ class MainPage(ctk.CTkFrame):
     lb = Leaderboard()
     lb_pnames_pscores = lb.openAndReadJSON()
 
-    global keycounter    
+    global keycounter
 
-    def __init__(self, parent, switch_callback):
-        ctk.CTkFrame.__init__(self, parent)
+
+
+    def __init__(self, parent, switch_callback, fg_color):
+        ctk.CTkFrame.__init__(self, parent, fg_color=fg_color)
         self.parent = parent
         player_count = 1
+
 
         self.stop_flag = threading.Event()
         global keycounter
         keycounter = KeyCounter(stop_flag=self.stop_flag)
         
         self.thread1 = None     
+        global big_font_mp
+        big_font_mp = ctk.CTkFont(family="Minion Pro Med",
+                           size=46,
+                           weight="bold")    
+        global medium_font_mp
+        medium_font_mp = ctk.CTkFont(family="Minion Pro Med",
+                           size=30,
+                           weight="bold")  
+        global small_font_mp
+        small_font_mp = ctk.CTkFont(family="Minion Pro Med",
+                           size=20,
+                           weight="bold")  
+        
         
         print("Playercount " + str(player_count))
         print("currentlb: " + str(list_current_players_scores))
 
         # Labels
-        self.label = ctk.CTkLabel(self, text="Jakkolo Plus")
-        self.label.pack(padx=20, pady=20)
+        #self.label = ctk.CTkLabel(self, text="Jakkolo Plus", font=big_font_mp)
+        #self.label.pack(padx=20, pady=20, side=ctk.TOP)
+
+        
+        
+
+        
+        # Labels
+        self.label = ctk.CTkLabel(self, text="Jakkolo Plus", font=big_font_mp, text_color="#547AA5")
+        self.label.pack(pady=10, anchor=ctk.N, side=ctk.TOP, fill=ctk.BOTH, expand=True)
 
         # Selection
         player_count = ctk.StringVar(value="Einzelspieler")
-        self.playercount_button = ctk.CTkSegmentedButton(master=self, height=80, width=480,dynamic_resizing=False, values=["Einzelspieler", "2 Spieler", "3 Spieler", "4 Spieler"],
-                                                     command= self.getPlayercountAndDisableStart,
-                                                     variable=player_count)
+        self.playercount_button = ctk.CTkSegmentedButton(master=self, height=96, width=500,dynamic_resizing=False, values=["Einzelspieler", "2 Spieler", "3 Spieler", "4 Spieler"],
+                                                         font=small_font_mp, text_color="#FFFFFF", command= self.getPlayercountAndDisableStart, selected_color="#547AA5", fg_color="#474044", unselected_color="#D9D9D9", unselected_hover_color="#828282", selected_hover_color="#324963", corner_radius=15,
+                                                         variable=player_count)
         
-        self.playercount_button.pack()
-
+        self.playercount_button.pack(pady=10, side=ctk.TOP)
         # Buttons
-        self.start_button = ctk.CTkButton(master=self, width=480, height=70, corner_radius=25, text="Start", command=lambda: [switch_callback(SpielernamenPage), self.start_tracker()])
-        self.start_button.pack(pady=10)
-        self.explain_button = ctk.CTkButton(master=self, width=480, height=70, corner_radius=25, text="Anleitung", font=("Minion Pro Med", 40), command=lambda: switch_callback(AnleitungsPage))
-        self.explain_button.pack(pady=10)
-        self.leaderboard_button = ctk.CTkButton(master=self, width=480, height=70, corner_radius=25, text="Bestenliste", command=lambda: switch_callback(BestenlistPage))
-        self.leaderboard_button.pack(pady=10)
+        #self.settings_button = ctk.CTkButton(self, text="", image=ctk.CTkImage(light_image=Image.open("icons\settings_icon.png"), dark_image=Image.open("icons\settings_icon.png"), size=(30,30)), command=lambda: switch_callback(EinstellungsPage))
+        #self.settings_button.pack(padx=100, pady=30, side=ctk.RIGHT)
+        
 
-        self.settings_button = ctk.CTkButton(self, text="Einstellungen", command=lambda: switch_callback(EinstellungsPage))
-        self.settings_button.pack()
-
-        self.quit_button = ctk.CTkButton(master=self, width=200, height=35, corner_radius=15, text="Quit", command=lambda: [self.on_close(), self.stop_tracker()])
-        self.quit_button.pack(pady=10)
-        self.start_button.configure(state="disabled")
-        self.disableStart()
+        self.quit_button = ctk.CTkButton(master=self, width=130, height=60, corner_radius=25, text="Quit", text_color="#FFFFFF", font=medium_font_mp, fg_color="#D9D9D9", hover_color="#828282", command=lambda: [self.on_close(), self.stop_tracker()])
+        self.quit_button.pack(pady=10, anchor=ctk.CENTER,side=ctk.BOTTOM)
+        self.leaderboard_button = ctk.CTkButton(master=self, width=500, height=90, corner_radius=25, text="Bestenliste", text_color="#FFFFFF", font=big_font_mp, fg_color="#4F5165", hover_color="#2F303C", command=lambda: switch_callback(BestenlistPage))
+        self.leaderboard_button.pack(pady=10, anchor=ctk.CENTER,side=ctk.BOTTOM)
+        self.explain_button = ctk.CTkButton(master=self, width=500, height=90, corner_radius=25, text="Anleitung", text_color="#FFFFFF", font=big_font_mp, fg_color="#50D8D7", hover_color="#209190", command=lambda: switch_callback(AnleitungsPage))
+        self.explain_button.pack(pady=10, anchor=ctk.CENTER,side=ctk.BOTTOM)
+        self.start_button = ctk.CTkButton(master=self, width=500, height=90, corner_radius=25, text="Start", text_color="#FFFFFF", font=big_font_mp, fg_color="#50D8D7", hover_color="#209190", command=lambda: [switch_callback(SpielernamenPage), self.start_tracker()])
+        self.start_button.pack(pady=10, anchor=ctk.CENTER, side=ctk.BOTTOM)
+        
+        
+        
+        #self.start_button.configure(state="disabled")
+        #self.disableStart()
 
 
     def getPlayercount(self, value):
@@ -151,8 +178,8 @@ class MainPage(ctk.CTkFrame):
         self.parent.destroy()
 
 class AnleitungsPage(ctk.CTkFrame):
-    def __init__(self, parent, switch_callback):
-        ctk.CTkFrame.__init__(self, parent)
+    def __init__(self, parent, switch_callback, fg_color):
+        ctk.CTkFrame.__init__(self, parent, fg_color=fg_color)
         self.parent = parent
         
         # Labels
@@ -171,8 +198,8 @@ class AnleitungsPage(ctk.CTkFrame):
             self.back_button.pack(pady=10)
 
 class BestenlistPage(ctk.CTkFrame):
-    def __init__(self, parent, switch_callback):
-        ctk.CTkFrame.__init__(self, parent)
+    def __init__(self, parent, switch_callback, fg_color):
+        ctk.CTkFrame.__init__(self, parent, fg_color=fg_color)
         self.parent = parent
         
         # Labels
@@ -203,8 +230,8 @@ class BestenlistPage(ctk.CTkFrame):
             self.score_label.pack(side=ctk.LEFT, padx=5)
 
 class EinstellungsPage(ctk.CTkFrame):
-    def __init__(self, parent, switch_callback):
-        ctk.CTkFrame.__init__(self, parent)
+    def __init__(self, parent, switch_callback, fg_color):
+        ctk.CTkFrame.__init__(self, parent, fg_color=fg_color)
         self.parent = parent
         
         self.label2 = ctk.CTkLabel(self, text="Einstellungen")
@@ -213,8 +240,8 @@ class EinstellungsPage(ctk.CTkFrame):
         self.button.pack(pady=10)
 
 class SpielernamenPage(ctk.CTkFrame):
-    def __init__(self, parent, switch_callback):
-        ctk.CTkFrame.__init__(self, parent)
+    def __init__(self, parent, switch_callback, fg_color):
+        ctk.CTkFrame.__init__(self, parent, fg_color=fg_color)
         self.parent = parent
         
         # Labels
@@ -306,8 +333,8 @@ class SpielernamenPage(ctk.CTkFrame):
         
 
 class HindernissPage(ctk.CTkFrame):
-    def __init__(self, parent, switch_callback):
-        ctk.CTkFrame.__init__(self, parent)
+    def __init__(self, parent, switch_callback, fg_color):
+        ctk.CTkFrame.__init__(self, parent, fg_color=fg_color)
         self.parent = parent
         
         # Labels
@@ -347,8 +374,8 @@ class HindernissPage(ctk.CTkFrame):
         print("List of current players and scores: " + str(list_current_players_scores))
     """
 class SpielPage(ctk.CTkFrame):
-    def __init__(self, parent, switch_callback):
-        ctk.CTkFrame.__init__(self, parent)
+    def __init__(self, parent, switch_callback, fg_color):
+        ctk.CTkFrame.__init__(self, parent, fg_color=fg_color)
         self.parent = parent
 
         global count_ones, count_twos, count_threes, count_fours
@@ -494,8 +521,8 @@ class SpielPage(ctk.CTkFrame):
         
 
 class ResultatPage(ctk.CTkFrame):
-    def __init__(self, parent, switch_callback):
-        ctk.CTkFrame.__init__(self, parent)
+    def __init__(self, parent, switch_callback, fg_color):
+        ctk.CTkFrame.__init__(self, parent, fg_color=fg_color)
         self.parent = parent
         global list_current_players_scores
         global lb_pnames_pscores
@@ -525,8 +552,8 @@ class ResultatPage(ctk.CTkFrame):
         
 
 class InfoPage(ctk.CTkFrame):
-    def __init__(self, parent, switch_callback):
-        ctk.CTkFrame.__init__(self, parent)
+    def __init__(self, parent, switch_callback, fg_color):
+        ctk.CTkFrame.__init__(self, parent, fg_color=fg_color)
         self.parent = parent
         
         # Labels
@@ -538,8 +565,8 @@ class InfoPage(ctk.CTkFrame):
         self.again_button.pack(pady=10)
 
 class RundenPage(ctk.CTkFrame):
-    def __init__(self, parent, switch_callback):
-        ctk.CTkFrame.__init__(self, parent)
+    def __init__(self, parent, switch_callback, fg_color):
+        ctk.CTkFrame.__init__(self, parent, fg_color=fg_color)
         self.parent = parent
         global count_ones, count_twos, count_threes, count_fours
         self.ones_during_pause = 0

@@ -1,6 +1,6 @@
 from controller_jakkolo import App
 from leaderboard_jakkolo import Leaderboard
-from pages_jakkolo_raspi import lb_pnames_pscores
+from pages_jakkolo import lb_pnames_pscores
 import customtkinter as ctk
 
 lb = Leaderboard()

@@ -1,5 +1,6 @@
 import keyboard
 import time
+import threading
 
 class KeyCounter:
     def __init__(self, stop_flag):
@@ -47,3 +48,8 @@ class KeyCounter:
     def stop(self):
         self.readKeys = False
         keyboard.unhook_all()
+
+if __name__ == "__main__":
+    stop_flag = threading.Event()
+    kc = KeyCounter(stop_flag=stop_flag)
+    kc.run(stop_flag=stop_flag)
