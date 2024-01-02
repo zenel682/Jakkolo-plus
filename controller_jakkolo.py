@@ -18,5 +18,5 @@ class App(ctk.CTk):
         if self.current_frame:
             self.current_frame.pack_forget()  # Hide the current frame
 
-        self.current_frame = frame_class(self.root, self.switch_frame, fg_color="#474044")
+        self.current_frame = frame_class(self.root, self.switch_frame, fg_color="#474044", width=1024, height=600)
         self.current_frame.pack()  # Display the new frame
