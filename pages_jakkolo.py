@@ -182,8 +182,8 @@ class AnleitungsPage(ctk.CTkFrame):
         self.checkStatus(switch_callback)
 
     def checkStatus(self, switch_callback):
-        global inGame
-        if inGame:
+        global lastpage
+        if lastpage == "Spielpage":
             self.back_button = ctk.CTkButton(master=self, width=130, height=60, corner_radius=25, text="zurück zum Spiel", text_color="#000000", font=small_font_mp, fg_color="#D9D9D9", hover_color="#828282", command=lambda: switch_callback(SpielPage))
             self.back_button.place(x=512, y=400, anchor='center')
         else: 
@@ -564,6 +564,10 @@ class SpielPage(ctk.CTkFrame):
     def __init__(self, parent, switch_callback, fg_color, width, height):
         ctk.CTkFrame.__init__(self, width=width, height=height, master=parent, fg_color=fg_color)
         self.parent = parent
+
+        # Status
+        global lastpage
+        lastpage = "Spielpage"
 
         global count_ones, count_twos, count_threes, count_fours
         global puck_count
