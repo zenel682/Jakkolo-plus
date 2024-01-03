@@ -243,10 +243,20 @@ class SpielernamenPage(ctk.CTkFrame):
     def __init__(self, parent, switch_callback, fg_color, width, height):
         ctk.CTkFrame.__init__(self, width=width, height=height, master=parent, fg_color=fg_color)
         self.parent = parent
+
+        # Fonts
+        global alphabet_font
+        alphabet_font = ctk.CTkFont(family="Minion Pro Med",
+                           size=25,
+                           weight="normal") 
+        global playername_font
+        playername_font = ctk.CTkFont(family="Minion Pro Med",
+                           size=30,
+                           weight="bold") 
         
         # Labels
-        self.title = ctk.CTkLabel(self, text="Spielernamen eingeben", font=big_font_mp, text_color="#547AA5")
-        self.title.place(x=512, y=35, anchor='center')
+        #self.title = ctk.CTkLabel(self, text="Spielernamen eingeben", font=big_font_mp, text_color="#547AA5")
+        #self.title.place(x=512, y=35, anchor='center')
 
         # Inputs
         self.playername_1_input = ctk.CTkEntry(self, width=350, height=50, corner_radius=15, fg_color="#4F5165", font=medium_font_mp, text_color="#FFFFFF", placeholder_text="Spielername 1")
@@ -259,11 +269,130 @@ class SpielernamenPage(ctk.CTkFrame):
         self.playername_4_input.place(x=512, y=370, anchor='center')
         self.disableInputs()
 
+
+        # Option two with colors
+        letterheight = 20
+        letterwidth = 20
+        letterradius = 3
+        #self.title = ctk.CTkLabel(self, text="Farbe aussuchen", font=big_font_mp, text_color="#547AA5")
+        #self.title.place(x=512, y=35, anchor='center')
+        self.player1_label = ctk.CTkLabel(self, text="Spieler 1", font=medium_font_mp, text_color="#547AA5")
+        #self.player1_label.place(x=100, y=150, anchor='center')
+        self.color_1_player_1 = ctk.CTkButton(self, width=80, height=80, corner_radius=15, fg_color="pink", hover_color="red", text="")
+        #self.color_1_player_1.place(x=512, y=150, anchor='center')
+
+        # Alphabet buttons
+        self.A_button = ctk.CTkButton(self, width=letterwidth, height=letterheight, font=alphabet_font, corner_radius=letterradius, fg_color="blue", text="A",  text_color="#547AA5", command=lambda: self.write_letter("A"))
+        self.A_button.place(x=100, y=100, anchor='center')
+        self.B_button = ctk.CTkButton(self, width=letterwidth, height=letterheight, font=alphabet_font, corner_radius=letterradius, fg_color="blue", text="B",  text_color="#547AA5", command=lambda: self.write_letter("B"))
+        self.B_button.place(x=130, y=100, anchor='center')
+        self.C_button = ctk.CTkButton(self, width=letterwidth, height=letterheight, font=alphabet_font, corner_radius=letterradius, fg_color="blue", text="C",  text_color="#547AA5", command=lambda: self.write_letter("C"))
+        self.C_button.place(x=160, y=100, anchor='center')
+        self.DEL_button = ctk.CTkButton(self, width=letterwidth, height=letterheight, font=alphabet_font, corner_radius=letterradius, fg_color="blue", text="DEL",  text_color="#547AA5", command=lambda: self.delete_letter())
+        self.DEL_button.place(x=240, y=100, anchor='center')
+        self.ENTER_button = ctk.CTkButton(self, width=letterwidth, height=letterheight, font=alphabet_font, corner_radius=letterradius, fg_color="blue", text="ENTER",  text_color="#547AA5", command=lambda: self.enter())
+        self.ENTER_button.place(x=350, y=100, anchor='center')
+
+        self.name_array = []
+        self.name = ""
+
+        self.name_1 = ""
+        self.name_2 = ""
+        self.name_3 = ""
+        self.name_4 = ""    
+
+        self.name_1_label = ctk.CTkLabel(master=self, text=self.name, font=playername_font)
+        self.name_1_label.place(x=200, y=200)
+        self.name_2_label = ctk.CTkLabel(master=self, text=self.name, font=playername_font)
+        self.name_2_label.place(x=200, y=250)
+        self.name_3_label = ctk.CTkLabel(master=self, text=self.name, font=playername_font)
+        self.name_3_label.place(x=200, y=300)
+        self.name_4_label = ctk.CTkLabel(master=self, text=self.name, font=playername_font)
+        self.name_4_label.place(x=200, y=350)
+
+        self.current_name_label = self.name_1_label
+
         # Buttons
         self.back_button = ctk.CTkButton(master=self, width=130, height=60, corner_radius=25, text="zurück", text_color="#000000", font=small_font_mp, fg_color="#D9D9D9", hover_color="#828282", command=lambda: [switch_callback(MainPage), self.clearPlayercount(), self.clearLeaderboard()])
         self.back_button.place(x=45, y=510)
         self.forward_button = ctk.CTkButton(master=self, width=130, height=60, corner_radius=25, text="weiter", text_color="#000000", font=small_font_mp, fg_color="#D9D9D9", hover_color="#828282", command=lambda: [switch_callback(HindernissPage), self.getSpielernamen(), self.createListOfCurrentPlayers()])
         self.forward_button.place(x=840, y=510)
+
+        self.after(250, self.updateNameLabel)
+
+    def write_letter(self, letter):
+        self.name_array.append(letter)
+        print(letter)
+
+    def delete_letter(self):
+        if len(self.name_array) != 0:
+            self.name_array.pop()
+            print("delete")
+
+    def enter(self):
+        if self.current_name_label == self.name_1_label:
+            if player_count == 1:
+                print("nothing cuase 1 player")
+                self.name_1 = list(self.name_array)
+            elif player_count >= 2:
+                print("change label to 2")
+                self.name_1 = list(self.name_array)
+                self.name_array = list(self.name_2)
+                self.name = ""
+                self.name_array.clear()
+                self.current_name_label = self.name_2_label
+        elif self.current_name_label == self.name_2_label:
+            if player_count == 2:
+                print("change back to 1")
+                self.name_2 = list(self.name_array)
+                self.name_array = list(self.name_1)
+                self.current_name_label = self.name_1_label
+            elif player_count >= 3:
+                print("change label to 3")
+                self.name_2 = list(self.name_array)
+                self.name_array = list(self.name_3)   
+                self.name = ""
+                self.name_array.clear()
+                self.current_name_label = self.name_3_label
+        elif self.current_name_label == self.name_3_label:
+            if player_count == 3:
+                print("change back to 1")
+                self.name_3 = list(self.name_array)
+                self.name_array = list(self.name_1)
+                self.current_name_label = self.name_1_label
+            elif player_count >= 4:
+                print("change label to 4")
+                self.name_3 = list(self.name_array)
+                self.name_array = list(self.name_4)
+                self.name = ""
+                self.name_array.clear()
+                self.current_name_label = self.name_4_label
+        elif self.current_name_label == self.name_4_label:
+            if player_count == 4:
+                print("change back to 1")
+                self.name_4 = list(self.name_array)
+                self.name_array = list(self.name_1)
+                self.current_name_label = self.name_1_label
+            else:
+                print("Error")
+        else:
+            print("Error2")
+
+        print("Enter")
+    
+    def updateNameLabel(self):
+        self.name = self.listToString(self.name_array)
+        self.current_name_label.configure(text=self.name)
+        self.after(250, self.updateNameLabel)    
+
+    # Function to convert
+    def listToString(self, list):
+        # initialize an empty string
+        str1 = " "
+        # return string
+        return (str1.join(list))
+
+
 
     def getSpielernamen(self):
         global name_player_1, name_player_2, name_player_3, name_player_4
