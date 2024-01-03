@@ -6,7 +6,6 @@ import customtkinter as ctk
 lb = Leaderboard()
 
 def on_close():
-    print("Close app")
     lb.safeAndCloseJSON(lb_pnames_pscores)
     root.destroy()
 
