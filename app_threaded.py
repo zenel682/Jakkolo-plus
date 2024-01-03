@@ -4,11 +4,11 @@ from tkinter import font
 import atexit
 
 # Toogle when using Raspi or PC
-#from gpio_class import Endschalter
-#endschalter = Endschalter()
-#thread1 = threading.Thread(target=endschalter.read_endschalter)
+from gpio_class import Endschalter
+endschalter = Endschalter()
+thread1 = threading.Thread(target=endschalter.read_endschalter)
 
-from keyboard_class import KeyCounter
+#from keyboard_class import KeyCounter
 #keycounter = KeyCounter()
 #thread1 = threading.Thread(target=keycounter)
 
@@ -27,6 +27,7 @@ class App:
         # Set the window size and make it unscalable
         self.root.geometry("1024x600")
         self.root.resizable(False, False)
+        self.root.config(cursor="none")
 
         # Create normal style buttons
         self.start_button = tk.Button(
@@ -151,12 +152,11 @@ class App:
 
     def start_tracker(self):
         print("Start Tracking")
-
         # Toggle on Raspi or PC
         #self.display_var = endschalter.b1_counter
         #endschalter.read_it = True  
         try: 
-            self.thread1 = threading.Thread(target=self.run_keycounter)
+            self.thread1 = threading.Thread(target=self.read_gpio)
             self.thread1.start()
             self.start = True
             print("thread started")
@@ -169,10 +169,14 @@ class App:
     def run_keycounter(self):    
         self.keycounter = KeyCounter()
         self.keycounter.run()
+        
+    def read_gpio(self):
+        self.endschalter = Endschalter()
+        self.endschalter.read_endschalter()
 
     def stop_tracker(self):
         if self.thread1 and self.thread1.is_alive():
-            self.keycounter.stop()
+            self.endschalter.stop()
             self.thread1.join(timeout=3)
             print("Joined threads")
         else:
@@ -184,10 +188,10 @@ class App:
         #new_value = endschalter.b1_counter
         if self.start:
             print("keycounter there") 
-            new_value1= self.keycounter.var1
-            new_value2= self.keycounter.var2
-            new_value3= self.keycounter.var3
-            new_value4= self.keycounter.var4
+            new_value1= self.endschalter.b1_counter
+            new_value2= self.endschalter.b2_counter
+            new_value3= self.endschalter.b3_counter
+            new_value4= self.endschalter.b4_counter
         else: 
             print("no keycounter")
             new_value1 = 0
@@ -201,7 +205,7 @@ class App:
         self.display_var4.set(new_value4)
 
         # Schedule the update function to run again after 1000 milliseconds
-        self.root.after(1000, self.update_variable)
+        self.root.after(100, self.update_variable)
 
     def show_page(self, title):
         # Destroy any existing widgets in the current frame
