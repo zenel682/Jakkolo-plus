@@ -205,7 +205,7 @@ class BestenlistPage(ctk.CTkFrame):
         # Buttons
         self.checkStatus(switch_callback)
 
-    def createLeaderboard(self, fg_color):  
+    def createLeaderboard(self):  
         for i in range(10):
             if i % 2:
                 colorpattern = "#547AA5"
@@ -315,7 +315,7 @@ class SpielernamenPage(ctk.CTkFrame):
         # Buttons
         self.back_button = ctk.CTkButton(master=self, width=130, height=60, corner_radius=25, text="zurück", text_color="#000000", font=small_font_mp, fg_color="#D9D9D9", hover_color="#828282", command=lambda: [switch_callback(MainPage), self.clearPlayercount(), self.clearLeaderboard()])
         self.back_button.place(x=45, y=510)
-        self.forward_button = ctk.CTkButton(master=self, width=130, height=60, corner_radius=25, text="weiter", text_color="#000000", font=small_font_mp, fg_color="#D9D9D9", hover_color="#828282", command=lambda: [switch_callback(HindernissPage), self.getSpielernamen(), self.createListOfCurrentPlayers()])
+        self.forward_button = ctk.CTkButton(master=self, width=130, height=60, corner_radius=25, text="weiter", text_color="#000000", font=small_font_mp, fg_color="#D9D9D9", hover_color="#828282", command=lambda: [switch_callback(HindernissPage), self.getSpielernamen2(), self.createListOfCurrentPlayers()])
         self.forward_button.place(x=840, y=510)
 
         self.after(250, self.updateNameLabel)
@@ -338,8 +338,6 @@ class SpielernamenPage(ctk.CTkFrame):
                 print("change label to 2")
                 self.name_1 = list(self.name_array)
                 self.name_array = list(self.name_2)
-                self.name = ""
-                self.name_array.clear()
                 self.current_name_label = self.name_2_label
         elif self.current_name_label == self.name_2_label:
             if player_count == 2:
@@ -351,8 +349,6 @@ class SpielernamenPage(ctk.CTkFrame):
                 print("change label to 3")
                 self.name_2 = list(self.name_array)
                 self.name_array = list(self.name_3)   
-                self.name = ""
-                self.name_array.clear()
                 self.current_name_label = self.name_3_label
         elif self.current_name_label == self.name_3_label:
             if player_count == 3:
@@ -364,8 +360,6 @@ class SpielernamenPage(ctk.CTkFrame):
                 print("change label to 4")
                 self.name_3 = list(self.name_array)
                 self.name_array = list(self.name_4)
-                self.name = ""
-                self.name_array.clear()
                 self.current_name_label = self.name_4_label
         elif self.current_name_label == self.name_4_label:
             if player_count == 4:
@@ -381,7 +375,7 @@ class SpielernamenPage(ctk.CTkFrame):
         print("Enter")
     
     def updateNameLabel(self):
-        self.name = self.listToString(self.name_array)
+        self.name = self.removeSpaces(self.listToString(self.name_array))
         self.current_name_label.configure(text=self.name)
         self.after(250, self.updateNameLabel)    
 
@@ -392,7 +386,38 @@ class SpielernamenPage(ctk.CTkFrame):
         # return string
         return (str1.join(list))
 
+    def getSpielernamen2(self):
+        global name_player_1, name_player_2, name_player_3, name_player_4
+        if self.name_1 != []:
+            name_player_1 = self.removeSpaces(self.listToString(self.name_1))
+        else:
+            name_player_1 = "Standardspieler 1"
 
+        if self.name_2 != []:
+            name_player_2 = self.removeSpaces(self.listToString(self.name_2))
+        else:
+            name_player_2 = "Standardspieler 2"
+
+        if self.name_3 != []:
+            name_player_3 = self.removeSpaces(self.listToString(self.name_3))
+        else:
+            name_player_3 = "Standardspieler 3"
+
+        if self.name_4!= []:
+            name_player_4 = self.removeSpaces(self.listToString(self.name_4))
+        else:
+            name_player_4 = "Standardspieler 4"
+
+        global current_player
+        current_player = name_player_1
+
+        print(name_player_1)
+        print(name_player_2)
+        print(name_player_3)      
+        print(name_player_4)
+
+    def removeSpaces(self, string):
+        return string.replace(" ", "")
 
     def getSpielernamen(self):
         global name_player_1, name_player_2, name_player_3, name_player_4
