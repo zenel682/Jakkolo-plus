@@ -565,6 +565,8 @@ class SpielPage(ctk.CTkFrame):
         ctk.CTkFrame.__init__(self, width=width, height=height, master=parent, fg_color=fg_color)
         self.parent = parent
 
+        print("Roundnumber: " + str(round_number))
+
         # Status
         global lastpage
         lastpage = "Spielpage"
@@ -620,6 +622,7 @@ class SpielPage(ctk.CTkFrame):
     def resetScoreNewPlayer(self):
         global current_player_name, old_player_name, score
         global count_ones, count_twos, count_threes, count_fours
+        global round_number
         if current_player_name != old_player_name:
             print("okke")
             keycounter.var1 = 0
@@ -631,6 +634,7 @@ class SpielPage(ctk.CTkFrame):
             count_threes = 0
             count_fours = 0
             score = 0
+            round_number = 1
 
     def update_variable(self):
         global count_ones, count_twos, count_threes, count_fours, score, scores
@@ -691,7 +695,6 @@ class SpielPage(ctk.CTkFrame):
             count_threes = 0
             count_fours = 0
             self.checkIfThereAreMorePlayers(switch_callback)
-            self.resetRoundnumber()
 
     def createCurrentLeaderboard(self):
         global list_current_players_scores     
@@ -765,21 +768,21 @@ class ResultatPage(ctk.CTkFrame):
             self.winner_label = ctk.CTkLabel(master=self, width=80, height=50, corner_radius=25, fg_color="#DAA520", text_color="#FFFFFF", font=medium_font_mp, text=f"{list_current_players_scores[0][0]} ist Sieger*in! \nmit {list_current_players_scores[0][1]} Punkten")
             self.winner_label.place(x=512, y=80, anchor='center')
             self.second_label = ctk.CTkLabel(master=self, width=80, height=50, corner_radius=25, fg_color="#C0C0C0", text_color="#FFFFFF", font=medium_font_mp, text=f"{list_current_players_scores[1][0]} ist Zweite*r! \nmit {list_current_players_scores[1][1]} Punkten")
-            self.second_label.place(x=270, y=200, anchor='center')
+            self.second_label.place(x=265, y=200, anchor='center')
         elif player_count == 3:
             # Labels
             self.winner_label = ctk.CTkLabel(master=self, width=80, height=50, corner_radius=25, fg_color="#DAA520", text_color="#FFFFFF", font=medium_font_mp, text=f"{list_current_players_scores[0][0]} ist Sieger*in! \nmit {list_current_players_scores[0][1]} Punkten")
             self.winner_label.place(x=512, y=80, anchor='center')
             self.second_label = ctk.CTkLabel(master=self, width=80, height=50, corner_radius=25, fg_color="#CD7F32", text_color="#FFFFFF", font=medium_font_mp, text=f"{list_current_players_scores[1][0]} ist Zweite*r! \nmit {list_current_players_scores[1][1]} Punkten")
-            self.second_label.place(x=270, y=200, anchor='center')
+            self.second_label.place(x=265, y=200, anchor='center')
             self.third_label = ctk.CTkLabel(master=self, width=80, height=50, corner_radius=25, fg_color="#C0C0C0", text_color="#FFFFFF", font=medium_font_mp, text=f"{list_current_players_scores[2][0]} ist Dritte*r! \nmit {list_current_players_scores[2][1]} Punkten")
-            self.third_label.place(x=738, y=200, anchor='center')
+            self.third_label.place(x=748, y=200, anchor='center')
         elif player_count == 4:
             # Labels
             self.winner_label = ctk.CTkLabel(master=self, width=80, height=50, corner_radius=25, fg_color="#DAA520", text_color="#FFFFFF", font=medium_font_mp, text=f"{list_current_players_scores[0][0]} ist Sieger*in! \nmit {list_current_players_scores[0][1]} Punkten")
             self.winner_label.place(x=512, y=80, anchor='center')
             self.second_label = ctk.CTkLabel(master=self, width=80, height=50, corner_radius=25, fg_color="#CD7F32", text_color="#FFFFFF", font=medium_font_mp, text=f"{list_current_players_scores[1][0]} ist Zweite*r! \nmit {list_current_players_scores[1][1]} Punkten")
-            self.second_label.place(x=270, y=200, anchor='center')
+            self.second_label.place(x=265, y=200, anchor='center')
             self.third_label = ctk.CTkLabel(master=self, width=80, height=50, corner_radius=25, fg_color="#C0C0C0", text_color="#FFFFFF", font=medium_font_mp, text=f"{list_current_players_scores[2][0]} ist Dritte*r! \nmit {list_current_players_scores[2][1]} Punkten")
             self.third_label.place(x=738, y=200, anchor='center')
             self.fourth_label = ctk.CTkLabel(master=self, width=80, height=50, corner_radius=25, fg_color="#624A2E", text_color="#FFFFFF", font=medium_font_mp, text=f"{list_current_players_scores[3][0]} ist Vierte*r! \nmit {list_current_players_scores[3][1]} Punkten")
