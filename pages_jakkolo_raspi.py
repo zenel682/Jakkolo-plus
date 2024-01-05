@@ -601,7 +601,7 @@ class SpielPage(ctk.CTkFrame):
 
         # Create image
         #self.goal_image_org = Image.open("icons\jakkolo_goal.png")
-        self.goal_image_org = Image.open("/home/jakkolo/jakkolo/jakkolo-plus/icons/jakkolo_goal.png")
+        self.goal_image_org = Image.open("/home/jakkolo/jakkolo-plus/icons/jakkolo_goal.png")
         self.resized_goal_image = self.goal_image_org.resize((740, 224))
         self.goal_image = ImageTk.PhotoImage(self.resized_goal_image)
         self.canvas = ctk.CTkCanvas(self, width=740, height=224, background="#474044", highlightthickness=0)
@@ -636,6 +636,7 @@ class SpielPage(ctk.CTkFrame):
     def resetScoreNewPlayer(self):
         global current_player_name, old_player_name, score
         global count_ones, count_twos, count_threes, count_fours
+        global round_number
         if current_player_name != old_player_name:
             print("okke")
             endschalter.b1_counter = 0
@@ -708,7 +709,7 @@ class SpielPage(ctk.CTkFrame):
             count_threes = 0
             count_fours = 0
             self.checkIfThereAreMorePlayers(switch_callback)
-            self.resetRoundnumber()
+            #self.resetRoundnumber()
 
     def createCurrentLeaderboard(self):
         global list_current_players_scores     
