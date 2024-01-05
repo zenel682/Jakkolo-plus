@@ -347,7 +347,7 @@ class SpielernamenPage(ctk.CTkFrame):
         self.L_button = ctk.CTkButton(self, width=letterwidth, height=letterheight, font=alphabet_font, corner_radius=letterradius, fg_color=letterbackground, hover_color=letterhover, text="L",  text_color=lettercolor, command=lambda: self.write_letter("L"))
         self.L_button.place(x=letterstart_x_row_2+8*letterdistance_xy, y=letterstart_y_row_1+letterdistance_xy, anchor='center')
         self.DEL_button = ctk.CTkButton(self, width=letterwidth, height=letterheight, font=alphabet_font, corner_radius=letterradius, fg_color=letterbackground, hover_color=letterhover, text="DEL",  text_color=lettercolor, command=lambda: self.delete_letter())
-        self.DEL_button.place(x=letterstart_x_row_2+9*letterdistance_xy+4, y=letterstart_y_row_1+letterdistance_xy, anchor='center')
+        self.DEL_button.place(x=letterstart_x_row_2+9*letterdistance_xy+6, y=letterstart_y_row_1+letterdistance_xy, anchor='center')
 
         # Third row
         self.Y_button = ctk.CTkButton(self, width=letterwidth, height=letterheight, font=alphabet_font, corner_radius=letterradius, fg_color=letterbackground, hover_color=letterhover, text="Y",  text_color=lettercolor, command=lambda: self.write_letter("Y"))
@@ -365,7 +365,7 @@ class SpielernamenPage(ctk.CTkFrame):
         self.M_button = ctk.CTkButton(self, width=letterwidth, height=letterheight, font=alphabet_font, corner_radius=letterradius, fg_color=letterbackground, hover_color=letterhover, text="M",  text_color=lettercolor, command=lambda: self.write_letter("M"))
         self.M_button.place(x=letterstart_x_row_3+6*letterdistance_xy, y=letterstart_y_row_1+2*letterdistance_xy, anchor='center')
         self.ENTER_button = ctk.CTkButton(self, width=letterwidth, height=letterheight, font=alphabet_font, corner_radius=letterradius, fg_color=letterbackground, hover_color=letterhover, text="ENTER",  text_color=lettercolor, command=lambda: self.enter())
-        self.ENTER_button.place(x=letterstart_x_row_3+7*letterdistance_xy+21, y=letterstart_y_row_1+2*letterdistance_xy, anchor='center')
+        self.ENTER_button.place(x=letterstart_x_row_3+7*letterdistance_xy+24, y=letterstart_y_row_1+2*letterdistance_xy, anchor='center')
 
         self.name_array = []
 

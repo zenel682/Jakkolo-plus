@@ -5,7 +5,7 @@ class App(ctk.CTk):
     def __init__(self, root):
         self.root = root
         root.geometry("1024x600")
-        #root.overrideredirect(True)
+        root.overrideredirect(True)
         root.configure(fg_color="#474044")
 
         self.current_frame = None
