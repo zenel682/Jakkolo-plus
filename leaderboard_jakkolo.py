@@ -3,6 +3,7 @@ import json
 class Leaderboard():
     def __init__(self):
         global path_to_leaderboard
+        #path_to_leaderboard = "leaderboard\leaderboard.JSON"
         path_to_leaderboard = "/home/jakkolo/jakkolo/jakkolo-plus/leaderboard/leaderboard.JSON"
         global player_names_scores
 

@@ -1,23 +1,12 @@
-import customtkinter as ctk
-from pages.pages import MyFrame, SecondFrame
-
-class App(ctk.CTk):
-    def __init__(self, root):
-        self.root = root
-        self.root.title("Titelblatt")
-
-        self.current_frame = None
-        self.show_first_page()
-
-    def show_first_page(self):
-        self.switch_frame(MyFrame)
-
-    def show_second_page(self):
-        self.switch_frame(SecondFrame)
-
-    def switch_frame(self, frame_class):
-        if self.current_frame:
-            self.current_frame.pack_forget()  # Hide the current frame
-
-        self.current_frame = frame_class(self.root, self.switch_frame)
-        self.current_frame.pack(padx=20, pady=20)  # Display the new frame
+import tkinter
+master=tkinter.Tk()
+master.title("place() method")
+master.resizable(False, False)
+master.geometry("180x180")
+button1=tkinter.Button(master, text="button1")
+button1.place(x=25, y=100)
+button2=tkinter.Button(master, text="button2")
+button2.place(x=100, y=25)
+button3=tkinter.Button(master, text="button3")
+button3.place(x=175, y=100)
+master.mainloop()
